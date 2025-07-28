@@ -1,14 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Calendar,
   Clock,
@@ -24,31 +35,37 @@ import {
   Search,
   CalendarDays,
   DollarSign,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Booking {
-  id: number
+  id: number;
   service: {
-    name: string
-    duration: number
-    price: number
-    category: string
-  }
+    name: string;
+    duration: number;
+    price: number;
+    category: string;
+  };
   client: {
-    name: string
-    email: string
-    phone: string
-    avatar: string
-    notes?: string
-  }
-  date: string
-  time: string
-  status: "pending" | "confirmed" | "completed" | "cancelled" | "no-show"
-  createdAt: string
-  paymentStatus: "pending" | "paid" | "refunded"
-  cancellationReason?: string
+    name: string;
+    email: string;
+    phone: string;
+    avatar: string;
+    notes?: string;
+  };
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled" | "no-show";
+  createdAt: string;
+  paymentStatus: "pending" | "paid" | "refunded";
+  cancellationReason?: string;
 }
 
 export default function ProviderBookingsPage() {
@@ -154,110 +171,127 @@ export default function ProviderBookingsPage() {
       status: "cancelled",
       createdAt: "2023-12-28",
       paymentStatus: "refunded",
-      cancellationReason: "Client requested cancellation due to scheduling conflict",
+      cancellationReason:
+        "Client requested cancellation due to scheduling conflict",
     },
-  ])
+  ]);
 
-  const [activeTab, setActiveTab] = useState("upcoming")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
-  const { toast } = useToast()
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const { toast } = useToast();
 
   const getFilteredBookings = () => {
-    const today = new Date().toISOString().split("T")[0]
+    const today = new Date().toISOString().split("T")[0];
 
     const filtered = bookings.filter((booking) => {
       const matchesSearch =
         booking.client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.client.email.toLowerCase().includes(searchTerm.toLowerCase())
+        booking.client.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = statusFilter === "all" || booking.status === statusFilter
+      const matchesStatus =
+        statusFilter === "all" || booking.status === statusFilter;
 
       const matchesTab = (() => {
         switch (activeTab) {
           case "upcoming":
-            return booking.date >= today && ["pending", "confirmed"].includes(booking.status)
+            return (
+              booking.date >= today &&
+              ["pending", "confirmed"].includes(booking.status)
+            );
           case "past":
-            return booking.date < today || ["completed", "cancelled", "no-show"].includes(booking.status)
+            return (
+              booking.date < today ||
+              ["completed", "cancelled", "no-show"].includes(booking.status)
+            );
           case "pending":
-            return booking.status === "pending"
+            return booking.status === "pending";
           default:
-            return true
+            return true;
         }
-      })()
+      })();
 
-      return matchesSearch && matchesStatus && matchesTab
-    })
+      return matchesSearch && matchesStatus && matchesTab;
+    });
 
     return filtered.sort((a, b) => {
       if (activeTab === "upcoming") {
-        return new Date(`${a.date}T${a.time}`).getTime() - new Date(`${b.date}T${b.time}`).getTime()
+        return (
+          new Date(`${a.date}T${a.time}`).getTime() -
+          new Date(`${b.date}T${b.time}`).getTime()
+        );
       }
-      return new Date(`${b.date}T${b.time}`).getTime() - new Date(`${a.date}T${a.time}`).getTime()
-    })
-  }
+      return (
+        new Date(`${b.date}T${b.time}`).getTime() -
+        new Date(`${a.date}T${a.time}`).getTime()
+      );
+    });
+  };
 
-  const handleBookingAction = (bookingId: number, action: "confirm" | "decline" | "complete" | "no-show") => {
+  const handleBookingAction = (
+    bookingId: number,
+    action: "confirm" | "decline" | "complete" | "no-show"
+  ) => {
     setBookings((prev) =>
       prev.map((booking) => {
         if (booking.id === bookingId) {
-          let newStatus: Booking["status"]
+          let newStatus: Booking["status"];
           switch (action) {
             case "confirm":
-              newStatus = "confirmed"
-              break
+              newStatus = "confirmed";
+              break;
             case "decline":
-              newStatus = "cancelled"
-              break
+              newStatus = "cancelled";
+              break;
             case "complete":
-              newStatus = "completed"
-              break
+              newStatus = "completed";
+              break;
             case "no-show":
-              newStatus = "no-show"
-              break
+              newStatus = "no-show";
+              break;
             default:
-              newStatus = booking.status
+              newStatus = booking.status;
           }
-          return { ...booking, status: newStatus }
+          return { ...booking, status: newStatus };
         }
-        return booking
-      }),
-    )
+        return booking;
+      })
+    );
 
     const actionMessages = {
       confirm: "Booking confirmed successfully",
       decline: "Booking declined",
       complete: "Booking marked as completed",
       "no-show": "Booking marked as no-show",
-    }
+    };
 
     toast({
       title: "Booking Updated",
       description: actionMessages[action],
-    })
-  }
+    });
+  };
 
   const getStatusColor = (status: Booking["status"]) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "confirmed":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "completed":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "no-show":
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const formatDateTime = (date: string, time: string) => {
-    const dateObj = new Date(`${date}T${time}`)
+    const dateObj = new Date(`${date}T${time}`);
     return {
       date: dateObj.toLocaleDateString("en-US", {
         weekday: "short",
@@ -270,25 +304,29 @@ export default function ProviderBookingsPage() {
         minute: "2-digit",
         hour12: true,
       }),
-    }
-  }
+    };
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
-  const filteredBookings = getFilteredBookings()
+  const filteredBookings = getFilteredBookings();
 
   const stats = {
     total: bookings.length,
     pending: bookings.filter((b) => b.status === "pending").length,
     confirmed: bookings.filter((b) => b.status === "confirmed").length,
     completed: bookings.filter((b) => b.status === "completed").length,
-    revenue: bookings.filter((b) => b.status === "completed").reduce((sum, b) => sum + b.service.price, 0),
-  }
+    revenue: bookings
+      .filter((b) => b.status === "completed")
+      .reduce((sum, b) => sum + b.service.price, 0),
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -298,7 +336,7 @@ export default function ProviderBookingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
               <Badge variant="secondary">Provider</Badge>
             </div>
             <div className="flex items-center space-x-4">
@@ -321,7 +359,9 @@ export default function ProviderBookingsPage() {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Booking Management</h1>
-          <p className="text-muted-foreground">Manage your appointments and client bookings</p>
+          <p className="text-muted-foreground">
+            Manage your appointments and client bookings
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -330,7 +370,9 @@ export default function ProviderBookingsPage() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Bookings</p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Bookings
+                  </p>
                   <p className="text-2xl font-bold">{stats.total}</p>
                 </div>
                 <CalendarDays className="h-8 w-8 text-muted-foreground" />
@@ -342,7 +384,9 @@ export default function ProviderBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Pending</p>
-                  <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+                  <p className="text-2xl font-bold text-yellow-600">
+                    {stats.pending}
+                  </p>
                 </div>
                 <Clock className="h-8 w-8 text-yellow-600" />
               </div>
@@ -353,7 +397,9 @@ export default function ProviderBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Confirmed</p>
-                  <p className="text-2xl font-bold text-blue-600">{stats.confirmed}</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {stats.confirmed}
+                  </p>
                 </div>
                 <Check className="h-8 w-8 text-blue-600" />
               </div>
@@ -364,7 +410,9 @@ export default function ProviderBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Completed</p>
-                  <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {stats.completed}
+                  </p>
                 </div>
                 <Check className="h-8 w-8 text-green-600" />
               </div>
@@ -375,7 +423,9 @@ export default function ProviderBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Revenue</p>
-                  <p className="text-2xl font-bold text-primary">${stats.revenue}</p>
+                  <p className="text-2xl font-bold text-primary">
+                    ${stats.revenue}
+                  </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-primary" />
               </div>
@@ -416,7 +466,9 @@ export default function ProviderBookingsPage() {
         {/* Bookings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="upcoming">Upcoming ({stats.pending + stats.confirmed})</TabsTrigger>
+            <TabsTrigger value="upcoming">
+              Upcoming ({stats.pending + stats.confirmed})
+            </TabsTrigger>
             <TabsTrigger value="past">Past Bookings</TabsTrigger>
             <TabsTrigger value="pending">Pending ({stats.pending})</TabsTrigger>
           </TabsList>
@@ -427,7 +479,9 @@ export default function ProviderBookingsPage() {
                 <Card>
                   <CardContent className="p-8 text-center">
                     <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg font-semibold mb-2">No bookings found</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      No bookings found
+                    </h3>
                     <p className="text-muted-foreground">
                       {searchTerm || statusFilter !== "all"
                         ? "Try adjusting your search or filters"
@@ -437,12 +491,17 @@ export default function ProviderBookingsPage() {
                 </Card>
               ) : (
                 filteredBookings.map((booking) => (
-                  <Card key={booking.id} className="hover:shadow-md transition-shadow">
+                  <Card
+                    key={booking.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-4 flex-1">
                           <Avatar className="h-12 w-12">
-                            <AvatarImage src={booking.client.avatar || "/placeholder.svg"} />
+                            <AvatarImage
+                              src={booking.client.avatar || "/placeholder.svg"}
+                            />
                             <AvatarFallback>
                               {booking.client.name
                                 .split(" ")
@@ -452,20 +511,34 @@ export default function ProviderBookingsPage() {
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h3 className="font-semibold text-lg">{booking.service.name}</h3>
-                              <Badge className={getStatusColor(booking.status)}>{booking.status}</Badge>
+                              <h3 className="font-semibold text-lg">
+                                {booking.service.name}
+                              </h3>
+                              <Badge className={getStatusColor(booking.status)}>
+                                {booking.status}
+                              </Badge>
                             </div>
-                            <p className="text-muted-foreground mb-2">with {booking.client.name}</p>
+                            <p className="text-muted-foreground mb-2">
+                              with {booking.client.name}
+                            </p>
                             <div className="flex items-center space-x-6 text-sm text-muted-foreground mb-2">
                               <div className="flex items-center space-x-1">
                                 <Calendar className="h-4 w-4" />
-                                <span>{formatDateTime(booking.date, booking.time).date}</span>
+                                <span>
+                                  {
+                                    formatDateTime(booking.date, booking.time)
+                                      .date
+                                  }
+                                </span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock className="h-4 w-4" />
                                 <span>
-                                  {formatDateTime(booking.date, booking.time).time} (
-                                  {formatDuration(booking.service.duration)})
+                                  {
+                                    formatDateTime(booking.date, booking.time)
+                                      .time
+                                  }{" "}
+                                  ({formatDuration(booking.service.duration)})
                                 </span>
                               </div>
                               <div className="flex items-center space-x-1">
@@ -495,7 +568,9 @@ export default function ProviderBookingsPage() {
                             <>
                               <Button
                                 size="sm"
-                                onClick={() => handleBookingAction(booking.id, "confirm")}
+                                onClick={() =>
+                                  handleBookingAction(booking.id, "confirm")
+                                }
                                 className="bg-green-600 hover:bg-green-700"
                               >
                                 <Check className="h-4 w-4 mr-1" />
@@ -504,7 +579,9 @@ export default function ProviderBookingsPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => handleBookingAction(booking.id, "decline")}
+                                onClick={() =>
+                                  handleBookingAction(booking.id, "decline")
+                                }
                                 className="text-red-600 border-red-600 hover:bg-red-50"
                               >
                                 <X className="h-4 w-4 mr-1" />
@@ -516,7 +593,9 @@ export default function ProviderBookingsPage() {
                             <>
                               <Button
                                 size="sm"
-                                onClick={() => handleBookingAction(booking.id, "complete")}
+                                onClick={() =>
+                                  handleBookingAction(booking.id, "complete")
+                                }
                                 className="bg-green-600 hover:bg-green-700"
                               >
                                 <Check className="h-4 w-4 mr-1" />
@@ -525,7 +604,9 @@ export default function ProviderBookingsPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => handleBookingAction(booking.id, "no-show")}
+                                onClick={() =>
+                                  handleBookingAction(booking.id, "no-show")
+                                }
                               >
                                 No Show
                               </Button>
@@ -538,7 +619,9 @@ export default function ProviderBookingsPage() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => setSelectedBooking(booking)}>
+                              <DropdownMenuItem
+                                onClick={() => setSelectedBooking(booking)}
+                              >
                                 <User className="h-4 w-4 mr-2" />
                                 View Details
                               </DropdownMenuItem>
@@ -564,25 +647,39 @@ export default function ProviderBookingsPage() {
 
         {/* Booking Details Modal */}
         {selectedBooking && (
-          <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
+          <Dialog
+            open={!!selectedBooking}
+            onOpenChange={() => setSelectedBooking(null)}
+          >
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Booking Details</DialogTitle>
-                <DialogDescription>Complete information about this booking</DialogDescription>
+                <DialogDescription>
+                  Complete information about this booking
+                </DialogDescription>
               </DialogHeader>
-              <BookingDetailsModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />
+              <BookingDetailsModal
+                booking={selectedBooking}
+                onClose={() => setSelectedBooking(null)}
+              />
             </DialogContent>
           </Dialog>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Booking Details Modal Component
-function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: () => void }) {
+function BookingDetailsModal({
+  booking,
+  onClose,
+}: {
+  booking: Booking;
+  onClose: () => void;
+}) {
   const formatDateTime = (date: string, time: string) => {
-    const dateObj = new Date(`${date}T${time}`)
+    const dateObj = new Date(`${date}T${time}`);
     return {
       date: dateObj.toLocaleDateString("en-US", {
         weekday: "long",
@@ -595,32 +692,34 @@ function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: 
         minute: "2-digit",
         hour12: true,
       }),
-    }
-  }
+    };
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
   const getStatusColor = (status: Booking["status"]) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "confirmed":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "completed":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "no-show":
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -678,7 +777,9 @@ function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: 
         {booking.client.notes && (
           <div className="mt-4 p-3 bg-muted rounded">
             <h4 className="font-medium mb-1">Client Notes:</h4>
-            <p className="text-sm text-muted-foreground">{booking.client.notes}</p>
+            <p className="text-sm text-muted-foreground">
+              {booking.client.notes}
+            </p>
           </div>
         )}
       </div>
@@ -697,11 +798,17 @@ function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: 
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Status:</span>
-            <Badge className={getStatusColor(booking.status)}>{booking.status}</Badge>
+            <Badge className={getStatusColor(booking.status)}>
+              {booking.status}
+            </Badge>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Payment:</span>
-            <Badge variant={booking.paymentStatus === "paid" ? "default" : "outline"}>{booking.paymentStatus}</Badge>
+            <Badge
+              variant={booking.paymentStatus === "paid" ? "default" : "outline"}
+            >
+              {booking.paymentStatus}
+            </Badge>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Booked on:</span>
@@ -719,7 +826,9 @@ function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: 
       {/* Cancellation Reason */}
       {booking.cancellationReason && (
         <div className="border rounded-lg p-4 border-red-200 bg-red-50">
-          <h3 className="font-semibold mb-2 text-red-800">Cancellation Reason</h3>
+          <h3 className="font-semibold mb-2 text-red-800">
+            Cancellation Reason
+          </h3>
           <p className="text-sm text-red-700">{booking.cancellationReason}</p>
         </div>
       )}
@@ -735,5 +844,5 @@ function BookingDetailsModal({ booking, onClose }: { booking: Booking; onClose: 
         </Button>
       </div>
     </div>
-  )
+  );
 }

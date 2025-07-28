@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { ModeToggle } from "@/components/mode-toggle"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   Calendar,
   Search,
@@ -23,8 +23,8 @@ import {
   BookOpen,
   Briefcase,
   Home,
-} from "lucide-react"
-import Link from "next/link"
+} from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
   const featuredServices = [
@@ -76,7 +76,7 @@ export default function HomePage() {
       location: "Chicago, IL",
       verified: true,
     },
-  ]
+  ];
 
   const categories = [
     { name: "Photography", icon: Camera, count: "1,234 services" },
@@ -85,36 +85,41 @@ export default function HomePage() {
     { name: "Education", icon: BookOpen, count: "743 services" },
     { name: "Consulting", icon: Briefcase, count: "567 services" },
     { name: "Home Services", icon: Home, count: "1,890 services" },
-  ]
+  ];
 
   const features = [
     {
       icon: Shield,
       title: "Verified Providers",
-      description: "All service providers are background-checked and verified for your safety and peace of mind.",
+      description:
+        "All service providers are background-checked and verified for your safety and peace of mind.",
     },
     {
       icon: Calendar,
       title: "Easy Scheduling",
-      description: "Book appointments instantly with real-time availability and automated confirmations.",
+      description:
+        "Book appointments instantly with real-time availability and automated confirmations.",
     },
     {
       icon: Zap,
       title: "Instant Booking",
-      description: "Skip the back-and-forth. Book services instantly with our streamlined booking process.",
+      description:
+        "Skip the back-and-forth. Book services instantly with our streamlined booking process.",
     },
     {
       icon: Heart,
       title: "Satisfaction Guaranteed",
-      description: "We stand behind every booking with our satisfaction guarantee and review system.",
+      description:
+        "We stand behind every booking with our satisfaction guarantee and review system.",
     },
-  ]
+  ];
 
   const testimonials = [
     {
       name: "Jessica Chen",
       role: "Small Business Owner",
-      content: "BookingHub has transformed how I manage my photography business. The booking system is seamless!",
+      content:
+        "Reservo has transformed how I manage my photography business. The booking system is seamless!",
       avatar: "/placeholder.svg?height=40&width=40",
       rating: 5,
     },
@@ -130,11 +135,11 @@ export default function HomePage() {
       name: "Sarah Thompson",
       role: "Busy Parent",
       content:
-        "As a working mom, BookingHub saves me so much time. I can book services for the whole family in minutes.",
+        "As a working mom, Reservo saves me so much time. I can book services for the whole family in minutes.",
       avatar: "/placeholder.svg?height=40&width=40",
       rating: 5,
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -144,16 +149,25 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href="/services" className="text-muted-foreground hover:text-foreground">
+              <Link
+                href="/services"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 Browse Services
               </Link>
-              <Link href="/how-it-works" className="text-muted-foreground hover:text-foreground">
+              <Link
+                href="/how-it-works"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 How It Works
               </Link>
-              <Link href="/become-provider" className="text-muted-foreground hover:text-foreground">
+              <Link
+                href="/become-provider"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 Become a Provider
               </Link>
             </nav>
@@ -178,8 +192,9 @@ export default function HomePage() {
             <span className="text-primary"> Trusted Professionals</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Connect with verified service providers in your area. From photography to fitness, tutoring to home services
-            - find and book the perfect professional for your needs.
+            Connect with verified service providers in your area. From
+            photography to fitness, tutoring to home services - find and book
+            the perfect professional for your needs.
           </p>
 
           {/* Search Bar */}
@@ -190,7 +205,10 @@ export default function HomePage() {
                   <div className="md:col-span-2">
                     <div className="relative">
                       <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="What service are you looking for?" className="pl-10" />
+                      <Input
+                        placeholder="What service are you looking for?"
+                        className="pl-10"
+                      />
                     </div>
                   </div>
                   <div>
@@ -234,18 +252,27 @@ export default function HomePage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Popular Service Categories</h2>
-            <p className="text-muted-foreground">Discover services across various categories</p>
+            <h2 className="text-3xl font-bold mb-4">
+              Popular Service Categories
+            </h2>
+            <p className="text-muted-foreground">
+              Discover services across various categories
+            </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {categories.map((category, index) => (
-              <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="cursor-pointer hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <category.icon className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">{category.name}</h3>
-                  <p className="text-sm text-muted-foreground">{category.count}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {category.count}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -258,11 +285,16 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Featured Services</h2>
-            <p className="text-muted-foreground">Top-rated services from verified professionals</p>
+            <p className="text-muted-foreground">
+              Top-rated services from verified professionals
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredServices.map((service) => (
-              <Card key={service.id} className="cursor-pointer hover:shadow-lg transition-shadow">
+              <Card
+                key={service.id}
+                className="cursor-pointer hover:shadow-lg transition-shadow"
+              >
                 <div className="aspect-video relative overflow-hidden rounded-t-lg">
                   <img
                     src={service.image || "/placeholder.svg"}
@@ -280,15 +312,23 @@ export default function HomePage() {
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{service.name}</h3>
                     <div className="text-right">
-                      <div className="font-bold text-primary">{service.price}</div>
+                      <div className="font-bold text-primary">
+                        {service.price}
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">by {service.provider}</p>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    by {service.provider}
+                  </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{service.rating}</span>
-                      <span className="text-sm text-muted-foreground">({service.reviews})</span>
+                      <span className="text-sm font-medium">
+                        {service.rating}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        ({service.reviews})
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <MapPin className="h-3 w-3 mr-1" />
@@ -314,8 +354,10 @@ export default function HomePage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose BookingHub?</h2>
-            <p className="text-muted-foreground">We make booking services simple, safe, and reliable</p>
+            <h2 className="text-3xl font-bold mb-4">Why Choose Reservo?</h2>
+            <p className="text-muted-foreground">
+              We make booking services simple, safe, and reliable
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -336,7 +378,9 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">What Our Users Say</h2>
-            <p className="text-muted-foreground">Join thousands of satisfied clients and providers</p>
+            <p className="text-muted-foreground">
+              Join thousands of satisfied clients and providers
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
@@ -344,13 +388,20 @@ export default function HomePage() {
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                      />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-4">"{testimonial.content}"</p>
+                  <p className="text-muted-foreground mb-4">
+                    "{testimonial.content}"
+                  </p>
                   <div className="flex items-center space-x-3">
                     <Avatar>
-                      <AvatarImage src={testimonial.avatar || "/placeholder.svg"} />
+                      <AvatarImage
+                        src={testimonial.avatar || "/placeholder.svg"}
+                      />
                       <AvatarFallback>
                         {testimonial.name
                           .split(" ")
@@ -360,7 +411,9 @@ export default function HomePage() {
                     </Avatar>
                     <div>
                       <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {testimonial.role}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -375,7 +428,8 @@ export default function HomePage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-xl mb-8 opacity-90">
-            Join BookingHub today and connect with trusted professionals in your area
+            Join Reservo today and connect with trusted professionals in your
+            area
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/register">
@@ -405,10 +459,11 @@ export default function HomePage() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Calendar className="h-6 w-6 text-primary" />
-                <span className="text-xl font-bold">BookingHub</span>
+                <span className="text-xl font-bold">Reservo</span>
               </div>
               <p className="text-muted-foreground">
-                Connecting clients with trusted service providers for seamless booking experiences.
+                Connecting clients with trusted service providers for seamless
+                booking experiences.
               </p>
             </div>
             <div>
@@ -435,17 +490,26 @@ export default function HomePage() {
               <h3 className="font-semibold mb-4">For Providers</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
-                  <Link href="/become-provider" className="hover:text-foreground">
+                  <Link
+                    href="/become-provider"
+                    className="hover:text-foreground"
+                  >
                     Become a Provider
                   </Link>
                 </li>
                 <li>
-                  <Link href="/provider-resources" className="hover:text-foreground">
+                  <Link
+                    href="/provider-resources"
+                    className="hover:text-foreground"
+                  >
                     Resources
                   </Link>
                 </li>
                 <li>
-                  <Link href="/provider-support" className="hover:text-foreground">
+                  <Link
+                    href="/provider-support"
+                    className="hover:text-foreground"
+                  >
                     Provider Support
                   </Link>
                 </li>
@@ -473,10 +537,10 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 BookingHub. All rights reserved.</p>
+            <p>&copy; 2024 Reservo. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

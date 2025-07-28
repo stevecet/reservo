@@ -8,9 +8,9 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "BookingHub - Service Provider & Client Platform",
+  title: "Reservo - Service Provider & Client Platform",
   description: "Connect with service providers and book appointments easily",
-    generator: 'v0.dev'
+    generator: 'Steveceto'
 }
 
 export default function RootLayout({

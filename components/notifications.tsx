@@ -1,30 +1,35 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Bell, Check, X, Calendar, Clock, User } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Bell, Check, X, Calendar, Clock, User } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Notification {
-  id: number
-  type: "booking_confirmed" | "booking_cancelled" | "booking_reminder" | "payment_received" | "review_received"
-  title: string
-  message: string
-  timestamp: string
-  read: boolean
-  actionUrl?: string
+  id: number;
+  type:
+    | "booking_confirmed"
+    | "booking_cancelled"
+    | "booking_reminder"
+    | "payment_received"
+    | "review_received";
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  actionUrl?: string;
   metadata?: {
-    bookingId?: number
-    clientName?: string
-    providerName?: string
-    serviceName?: string
-    amount?: number
-    refundAmount?: number
-    duration?: string
-    location?: string
-  }
+    bookingId?: number;
+    clientName?: string;
+    providerName?: string;
+    serviceName?: string;
+    amount?: number;
+    refundAmount?: number;
+    duration?: string;
+    location?: string;
+  };
 }
 
 export function NotificationCenter() {
@@ -33,7 +38,8 @@ export function NotificationCenter() {
       id: 1,
       type: "booking_confirmed",
       title: "Booking Confirmed",
-      message: "Your photography session with Sarah Johnson has been confirmed for Jan 20, 2024 at 2:00 PM",
+      message:
+        "Your photography session with Sarah Johnson has been confirmed for Jan 20, 2024 at 2:00 PM",
       timestamp: "2024-01-15T10:30:00Z",
       read: false,
       actionUrl: "/dashboard/client/bookings",
@@ -50,7 +56,8 @@ export function NotificationCenter() {
       id: 2,
       type: "booking_reminder",
       title: "Appointment Reminder",
-      message: "You have a personal training session with Mike Chen tomorrow at 9:00 AM",
+      message:
+        "You have a personal training session with Mike Chen tomorrow at 9:00 AM",
       timestamp: "2024-01-24T18:00:00Z",
       read: false,
       actionUrl: "/dashboard/client/bookings",
@@ -79,7 +86,8 @@ export function NotificationCenter() {
       id: 4,
       type: "review_received",
       title: "New Review",
-      message: "Alice Smith left a 5-star review for your portrait photography service",
+      message:
+        "Alice Smith left a 5-star review for your portrait photography service",
       timestamp: "2024-01-12T16:45:00Z",
       read: true,
       actionUrl: "/dashboard/provider/reviews",
@@ -103,62 +111,72 @@ export function NotificationCenter() {
         refundAmount: 150,
       },
     },
-  ])
+  ]);
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (notificationId: number) => {
     setNotifications((prev) =>
-      prev.map((notification) => (notification.id === notificationId ? { ...notification, read: true } : notification)),
-    )
-  }
+      prev.map((notification) =>
+        notification.id === notificationId
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
+  };
 
   const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })))
-  }
+    setNotifications((prev) =>
+      prev.map((notification) => ({ ...notification, read: true }))
+    );
+  };
 
   const deleteNotification = (notificationId: number) => {
-    setNotifications((prev) => prev.filter((notification) => notification.id !== notificationId))
-  }
+    setNotifications((prev) =>
+      prev.filter((notification) => notification.id !== notificationId)
+    );
+  };
 
   const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
       case "booking_confirmed":
-        return <Check className="h-4 w-4 text-green-600" />
+        return <Check className="h-4 w-4 text-green-600" />;
       case "booking_cancelled":
-        return <X className="h-4 w-4 text-red-600" />
+        return <X className="h-4 w-4 text-red-600" />;
       case "booking_reminder":
-        return <Clock className="h-4 w-4 text-blue-600" />
+        return <Clock className="h-4 w-4 text-blue-600" />;
       case "payment_received":
-        return <Calendar className="h-4 w-4 text-green-600" />
+        return <Calendar className="h-4 w-4 text-green-600" />;
       case "review_received":
-        return <User className="h-4 w-4 text-purple-600" />
+        return <User className="h-4 w-4 text-purple-600" />;
       default:
-        return <Bell className="h-4 w-4 text-gray-600" />
+        return <Bell className="h-4 w-4 text-gray-600" />;
     }
-  }
+  };
 
   const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp)
-    const now = new Date()
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
 
     if (diffInHours < 1) {
-      return "Just now"
+      return "Just now";
     } else if (diffInHours < 24) {
-      return `${diffInHours}h ago`
+      return `${diffInHours}h ago`;
     } else if (diffInHours < 48) {
-      return "Yesterday"
+      return "Yesterday";
     } else {
       return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-      })
+      });
     }
-  }
+  };
 
   // Simulate real-time notifications
   useEffect(() => {
@@ -172,18 +190,18 @@ export function NotificationCenter() {
           message: "You have an upcoming appointment in 1 hour",
           timestamp: new Date().toISOString(),
           read: false,
-        }
+        };
 
-        setNotifications((prev) => [newNotification, ...prev])
+        setNotifications((prev) => [newNotification, ...prev]);
         toast({
           title: newNotification.title,
           description: newNotification.message,
-        })
+        });
       }
-    }, 30000) // Check every 30 seconds
+    }, 30000); // Check every 30 seconds
 
-    return () => clearInterval(interval)
-  }, [toast])
+    return () => clearInterval(interval);
+  }, [toast]);
 
   return (
     <Card className="w-full max-w-md">
@@ -192,7 +210,10 @@ export function NotificationCenter() {
           <Bell className="h-5 w-5" />
           <CardTitle className="text-lg">Notifications</CardTitle>
           {unreadCount > 0 && (
-            <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center text-xs">
+            <Badge
+              variant="destructive"
+              className="h-5 w-5 p-0 flex items-center justify-center text-xs"
+            >
               {unreadCount}
             </Badge>
           )}
@@ -219,25 +240,43 @@ export function NotificationCenter() {
                 }`}
               >
                 <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0 mt-1">{getNotificationIcon(notification.type)}</div>
+                  <div className="flex-shrink-0 mt-1">
+                    {getNotificationIcon(notification.type)}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <p
-                          className={`text-sm font-medium ${!notification.read ? "text-foreground" : "text-muted-foreground"}`}
+                          className={`text-sm font-medium ${
+                            !notification.read
+                              ? "text-foreground"
+                              : "text-muted-foreground"
+                          }`}
                         >
                           {notification.title}
                         </p>
-                        <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
-                        <p className="text-xs text-muted-foreground mt-2">{formatTimestamp(notification.timestamp)}</p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {formatTimestamp(notification.timestamp)}
+                        </p>
                       </div>
                       <div className="flex items-center space-x-1 ml-2">
                         {!notification.read && (
-                          <Button variant="ghost" size="sm" onClick={() => markAsRead(notification.id)}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => markAsRead(notification.id)}
+                          >
                             <Check className="h-3 w-3" />
                           </Button>
                         )}
-                        <Button variant="ghost" size="sm" onClick={() => deleteNotification(notification.id)}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => deleteNotification(notification.id)}
+                        >
                           <X className="h-3 w-3" />
                         </Button>
                       </div>
@@ -250,7 +289,7 @@ export function NotificationCenter() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 // Email notification templates (for backend implementation)
@@ -272,7 +311,7 @@ export const emailTemplates = {
           <p><strong>Price:</strong> ${{ amount }}</p>
         </div>
         <p>If you need to make any changes, please contact us at least 24 hours before your appointment.</p>
-        <p>Best regards,<br>BookingHub Team</p>
+        <p>Best regards,<br>Reservo Team</p>
       </div>
     `,
   },
@@ -292,7 +331,7 @@ export const emailTemplates = {
         </div>
         <p>Please arrive 5-10 minutes early for your appointment.</p>
         <p>Looking forward to seeing you!</p>
-        <p>Best regards,<br>BookingHub Team</p>
+        <p>Best regards,<br>Reservo Team</p>
       </div>
     `,
   },
@@ -309,10 +348,12 @@ export const emailTemplates = {
           <p><strong>Original Date:</strong> {{date}}</p>
           <p><strong>Original Time:</strong> {{time}}</p>
         </div>
-        <p>{{#if refundAmount}}A refund of ${{ refundAmount }} will be processed within 3-5 business days.{{/if}}</p>
+        <p>{{#if refundAmount}}A refund of ${{
+          refundAmount,
+        }} will be processed within 3-5 business days.{{/if}}</p>
         <p>We're sorry to see you go. Feel free to book again anytime!</p>
-        <p>Best regards,<br>BookingHub Team</p>
+        <p>Best regards,<br>Reservo Team</p>
       </div>
     `,
   },
-}
+};

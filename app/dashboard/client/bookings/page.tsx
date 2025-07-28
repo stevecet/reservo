@@ -1,15 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,8 +26,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Calendar,
   Clock,
@@ -36,33 +47,39 @@ import {
   CalendarDays,
   DollarSign,
   Edit,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
 
 interface ClientBooking {
-  id: number
+  id: number;
   service: {
-    name: string
-    duration: number
-    price: number
-    category: string
-  }
+    name: string;
+    duration: number;
+    price: number;
+    category: string;
+  };
   provider: {
-    name: string
-    avatar: string
-    rating: number
-    reviews: number
-    location: string
-  }
-  date: string
-  time: string
-  status: "pending" | "confirmed" | "completed" | "cancelled" | "no-show"
-  createdAt: string
-  paymentStatus: "pending" | "paid" | "refunded"
-  cancellationDeadline: string
-  notes?: string
+    name: string;
+    avatar: string;
+    rating: number;
+    reviews: number;
+    location: string;
+  };
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled" | "no-show";
+  createdAt: string;
+  paymentStatus: "pending" | "paid" | "refunded";
+  cancellationDeadline: string;
+  notes?: string;
 }
 
 export default function ClientBookingsPage() {
@@ -156,92 +173,120 @@ export default function ClientBookingsPage() {
       paymentStatus: "refunded",
       cancellationDeadline: "2024-01-06T16:00:00",
     },
-  ])
+  ]);
 
-  const [activeTab, setActiveTab] = useState("upcoming")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [selectedBooking, setSelectedBooking] = useState<ClientBooking | null>(null)
-  const [cancellingBooking, setCancellingBooking] = useState<ClientBooking | null>(null)
-  const [cancellationReason, setCancellationReason] = useState("")
-  const { toast } = useToast()
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedBooking, setSelectedBooking] = useState<ClientBooking | null>(
+    null
+  );
+  const [cancellingBooking, setCancellingBooking] =
+    useState<ClientBooking | null>(null);
+  const [cancellationReason, setCancellationReason] = useState("");
+  const { toast } = useToast();
 
   const getFilteredBookings = () => {
-    const today = new Date().toISOString().split("T")[0]
+    const today = new Date().toISOString().split("T")[0];
 
     const filtered = bookings.filter((booking) => {
       const matchesSearch =
         booking.service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.service.category.toLowerCase().includes(searchTerm.toLowerCase())
+        booking.provider.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        booking.service.category
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-      const matchesStatus = statusFilter === "all" || booking.status === statusFilter
+      const matchesStatus =
+        statusFilter === "all" || booking.status === statusFilter;
 
       const matchesTab = (() => {
         switch (activeTab) {
           case "upcoming":
-            return booking.date >= today && ["pending", "confirmed"].includes(booking.status)
+            return (
+              booking.date >= today &&
+              ["pending", "confirmed"].includes(booking.status)
+            );
           case "past":
-            return booking.date < today || ["completed", "cancelled", "no-show"].includes(booking.status)
+            return (
+              booking.date < today ||
+              ["completed", "cancelled", "no-show"].includes(booking.status)
+            );
           default:
-            return true
+            return true;
         }
-      })()
+      })();
 
-      return matchesSearch && matchesStatus && matchesTab
-    })
+      return matchesSearch && matchesStatus && matchesTab;
+    });
 
     return filtered.sort((a, b) => {
       if (activeTab === "upcoming") {
-        return new Date(`${a.date}T${a.time}`).getTime() - new Date(`${b.date}T${b.time}`).getTime()
+        return (
+          new Date(`${a.date}T${a.time}`).getTime() -
+          new Date(`${b.date}T${b.time}`).getTime()
+        );
       }
-      return new Date(`${b.date}T${b.time}`).getTime() - new Date(`${a.date}T${a.time}`).getTime()
-    })
-  }
+      return (
+        new Date(`${b.date}T${b.time}`).getTime() -
+        new Date(`${a.date}T${a.time}`).getTime()
+      );
+    });
+  };
 
   const canCancelBooking = (booking: ClientBooking) => {
-    const now = new Date()
-    const cancellationDeadline = new Date(booking.cancellationDeadline)
-    return now < cancellationDeadline && ["pending", "confirmed"].includes(booking.status)
-  }
+    const now = new Date();
+    const cancellationDeadline = new Date(booking.cancellationDeadline);
+    return (
+      now < cancellationDeadline &&
+      ["pending", "confirmed"].includes(booking.status)
+    );
+  };
 
   const handleCancelBooking = (bookingId: number, reason: string) => {
     setBookings((prev) =>
       prev.map((booking) =>
         booking.id === bookingId
-          ? { ...booking, status: "cancelled" as const, paymentStatus: "refunded" as const }
-          : booking,
-      ),
-    )
+          ? {
+              ...booking,
+              status: "cancelled" as const,
+              paymentStatus: "refunded" as const,
+            }
+          : booking
+      )
+    );
 
     toast({
       title: "Booking Cancelled",
-      description: "Your booking has been cancelled and you'll receive a refund within 3-5 business days.",
-    })
+      description:
+        "Your booking has been cancelled and you'll receive a refund within 3-5 business days.",
+    });
 
-    setCancellingBooking(null)
-    setCancellationReason("")
-  }
+    setCancellingBooking(null);
+    setCancellationReason("");
+  };
 
   const getStatusColor = (status: ClientBooking["status"]) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "confirmed":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "completed":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "no-show":
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const formatDateTime = (date: string, time: string) => {
-    const dateObj = new Date(`${date}T${time}`)
+    const dateObj = new Date(`${date}T${time}`);
     return {
       date: dateObj.toLocaleDateString("en-US", {
         weekday: "short",
@@ -254,24 +299,30 @@ export default function ClientBookingsPage() {
         minute: "2-digit",
         hour12: true,
       }),
-    }
-  }
+    };
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
-  const filteredBookings = getFilteredBookings()
+  const filteredBookings = getFilteredBookings();
 
   const stats = {
     total: bookings.length,
-    upcoming: bookings.filter((b) => ["pending", "confirmed"].includes(b.status)).length,
+    upcoming: bookings.filter((b) =>
+      ["pending", "confirmed"].includes(b.status)
+    ).length,
     completed: bookings.filter((b) => b.status === "completed").length,
-    spent: bookings.filter((b) => b.status === "completed").reduce((sum, b) => sum + b.service.price, 0),
-  }
+    spent: bookings
+      .filter((b) => b.status === "completed")
+      .reduce((sum, b) => sum + b.service.price, 0),
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -281,16 +332,25 @@ export default function ClientBookingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-muted-foreground hover:text-foreground">
+              <Link
+                href="/"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 Home
               </Link>
-              <Link href="/services" className="text-muted-foreground hover:text-foreground">
+              <Link
+                href="/services"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 Browse Services
               </Link>
-              <Link href="/dashboard/client" className="text-foreground font-medium">
+              <Link
+                href="/dashboard/client"
+                className="text-foreground font-medium"
+              >
                 Dashboard
               </Link>
             </nav>
@@ -314,7 +374,9 @@ export default function ClientBookingsPage() {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">My Bookings</h1>
-          <p className="text-muted-foreground">Manage your appointments and booking history</p>
+          <p className="text-muted-foreground">
+            Manage your appointments and booking history
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -323,7 +385,9 @@ export default function ClientBookingsPage() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Bookings</p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Bookings
+                  </p>
                   <p className="text-2xl font-bold">{stats.total}</p>
                 </div>
                 <CalendarDays className="h-8 w-8 text-muted-foreground" />
@@ -335,7 +399,9 @@ export default function ClientBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Upcoming</p>
-                  <p className="text-2xl font-bold text-blue-600">{stats.upcoming}</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {stats.upcoming}
+                  </p>
                 </div>
                 <Clock className="h-8 w-8 text-blue-600" />
               </div>
@@ -346,7 +412,9 @@ export default function ClientBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Completed</p>
-                  <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {stats.completed}
+                  </p>
                 </div>
                 <Calendar className="h-8 w-8 text-green-600" />
               </div>
@@ -357,7 +425,9 @@ export default function ClientBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Spent</p>
-                  <p className="text-2xl font-bold text-primary">${stats.spent}</p>
+                  <p className="text-2xl font-bold text-primary">
+                    ${stats.spent}
+                  </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-primary" />
               </div>
@@ -397,7 +467,9 @@ export default function ClientBookingsPage() {
         {/* Bookings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="upcoming">Upcoming ({stats.upcoming})</TabsTrigger>
+            <TabsTrigger value="upcoming">
+              Upcoming ({stats.upcoming})
+            </TabsTrigger>
             <TabsTrigger value="past">Past Bookings</TabsTrigger>
           </TabsList>
 
@@ -407,13 +479,15 @@ export default function ClientBookingsPage() {
                 <Card>
                   <CardContent className="p-8 text-center">
                     <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg font-semibold mb-2">No bookings found</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      No bookings found
+                    </h3>
                     <p className="text-muted-foreground mb-4">
                       {searchTerm || statusFilter !== "all"
                         ? "Try adjusting your search or filters"
                         : activeTab === "upcoming"
-                          ? "You don't have any upcoming bookings"
-                          : "You don't have any past bookings"}
+                        ? "You don't have any upcoming bookings"
+                        : "You don't have any past bookings"}
                     </p>
                     {activeTab === "upcoming" && (
                       <Button asChild>
@@ -424,12 +498,19 @@ export default function ClientBookingsPage() {
                 </Card>
               ) : (
                 filteredBookings.map((booking) => (
-                  <Card key={booking.id} className="hover:shadow-md transition-shadow">
+                  <Card
+                    key={booking.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-4 flex-1">
                           <Avatar className="h-12 w-12">
-                            <AvatarImage src={booking.provider.avatar || "/placeholder.svg"} />
+                            <AvatarImage
+                              src={
+                                booking.provider.avatar || "/placeholder.svg"
+                              }
+                            />
                             <AvatarFallback>
                               {booking.provider.name
                                 .split(" ")
@@ -439,20 +520,34 @@ export default function ClientBookingsPage() {
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h3 className="font-semibold text-lg">{booking.service.name}</h3>
-                              <Badge className={getStatusColor(booking.status)}>{booking.status}</Badge>
+                              <h3 className="font-semibold text-lg">
+                                {booking.service.name}
+                              </h3>
+                              <Badge className={getStatusColor(booking.status)}>
+                                {booking.status}
+                              </Badge>
                             </div>
-                            <p className="text-muted-foreground mb-2">with {booking.provider.name}</p>
+                            <p className="text-muted-foreground mb-2">
+                              with {booking.provider.name}
+                            </p>
                             <div className="flex items-center space-x-6 text-sm text-muted-foreground mb-2">
                               <div className="flex items-center space-x-1">
                                 <Calendar className="h-4 w-4" />
-                                <span>{formatDateTime(booking.date, booking.time).date}</span>
+                                <span>
+                                  {
+                                    formatDateTime(booking.date, booking.time)
+                                      .date
+                                  }
+                                </span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock className="h-4 w-4" />
                                 <span>
-                                  {formatDateTime(booking.date, booking.time).time} (
-                                  {formatDuration(booking.service.duration)})
+                                  {
+                                    formatDateTime(booking.date, booking.time)
+                                      .time
+                                  }{" "}
+                                  ({formatDuration(booking.service.duration)})
                                 </span>
                               </div>
                               <div className="flex items-center space-x-1">
@@ -464,7 +559,9 @@ export default function ClientBookingsPage() {
                               <div className="flex items-center space-x-1">
                                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                 <span>{booking.provider.rating}</span>
-                                <span>({booking.provider.reviews} reviews)</span>
+                                <span>
+                                  ({booking.provider.reviews} reviews)
+                                </span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <MapPin className="h-4 w-4" />
@@ -493,25 +590,39 @@ export default function ClientBookingsPage() {
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Cancel Booking</AlertDialogTitle>
+                                  <AlertDialogTitle>
+                                    Cancel Booking
+                                  </AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to cancel this booking? This action cannot be undone.
+                                    Are you sure you want to cancel this
+                                    booking? This action cannot be undone.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <div className="my-4">
-                                  <Label htmlFor="reason">Reason for cancellation (optional)</Label>
+                                  <Label htmlFor="reason">
+                                    Reason for cancellation (optional)
+                                  </Label>
                                   <Textarea
                                     id="reason"
                                     value={cancellationReason}
-                                    onChange={(e) => setCancellationReason(e.target.value)}
+                                    onChange={(e) =>
+                                      setCancellationReason(e.target.value)
+                                    }
                                     placeholder="Please let us know why you're cancelling..."
                                     className="mt-2"
                                   />
                                 </div>
                                 <AlertDialogFooter>
-                                  <AlertDialogCancel>Keep Booking</AlertDialogCancel>
+                                  <AlertDialogCancel>
+                                    Keep Booking
+                                  </AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleCancelBooking(booking.id, cancellationReason)}
+                                    onClick={() =>
+                                      handleCancelBooking(
+                                        booking.id,
+                                        cancellationReason
+                                      )
+                                    }
                                     className="bg-red-600 hover:bg-red-700"
                                   >
                                     Cancel Booking
@@ -527,7 +638,9 @@ export default function ClientBookingsPage() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => setSelectedBooking(booking)}>
+                              <DropdownMenuItem
+                                onClick={() => setSelectedBooking(booking)}
+                              >
                                 <Calendar className="h-4 w-4 mr-2" />
                                 View Details
                               </DropdownMenuItem>
@@ -541,7 +654,9 @@ export default function ClientBookingsPage() {
                                   Write Review
                                 </DropdownMenuItem>
                               )}
-                              {["pending", "confirmed"].includes(booking.status) && (
+                              {["pending", "confirmed"].includes(
+                                booking.status
+                              ) && (
                                 <DropdownMenuItem>
                                   <Edit className="h-4 w-4 mr-2" />
                                   Reschedule
@@ -561,25 +676,39 @@ export default function ClientBookingsPage() {
 
         {/* Booking Details Modal */}
         {selectedBooking && (
-          <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
+          <Dialog
+            open={!!selectedBooking}
+            onOpenChange={() => setSelectedBooking(null)}
+          >
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Booking Details</DialogTitle>
-                <DialogDescription>Complete information about your booking</DialogDescription>
+                <DialogDescription>
+                  Complete information about your booking
+                </DialogDescription>
               </DialogHeader>
-              <ClientBookingDetailsModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />
+              <ClientBookingDetailsModal
+                booking={selectedBooking}
+                onClose={() => setSelectedBooking(null)}
+              />
             </DialogContent>
           </Dialog>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Client Booking Details Modal Component
-function ClientBookingDetailsModal({ booking, onClose }: { booking: ClientBooking; onClose: () => void }) {
+function ClientBookingDetailsModal({
+  booking,
+  onClose,
+}: {
+  booking: ClientBooking;
+  onClose: () => void;
+}) {
   const formatDateTime = (date: string, time: string) => {
-    const dateObj = new Date(`${date}T${time}`)
+    const dateObj = new Date(`${date}T${time}`);
     return {
       date: dateObj.toLocaleDateString("en-US", {
         weekday: "long",
@@ -592,32 +721,34 @@ function ClientBookingDetailsModal({ booking, onClose }: { booking: ClientBookin
         minute: "2-digit",
         hour12: true,
       }),
-    }
-  }
+    };
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
   const getStatusColor = (status: ClientBooking["status"]) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "confirmed":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "completed":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "no-show":
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -662,7 +793,9 @@ function ClientBookingDetailsModal({ booking, onClose }: { booking: ClientBookin
             <div className="flex items-center space-x-2 text-sm">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
               <span>{booking.provider.rating}</span>
-              <span className="text-muted-foreground">({booking.provider.reviews} reviews)</span>
+              <span className="text-muted-foreground">
+                ({booking.provider.reviews} reviews)
+              </span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
@@ -686,11 +819,17 @@ function ClientBookingDetailsModal({ booking, onClose }: { booking: ClientBookin
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Status:</span>
-            <Badge className={getStatusColor(booking.status)}>{booking.status}</Badge>
+            <Badge className={getStatusColor(booking.status)}>
+              {booking.status}
+            </Badge>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Payment:</span>
-            <Badge variant={booking.paymentStatus === "paid" ? "default" : "outline"}>{booking.paymentStatus}</Badge>
+            <Badge
+              variant={booking.paymentStatus === "paid" ? "default" : "outline"}
+            >
+              {booking.paymentStatus}
+            </Badge>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Booked on:</span>
@@ -724,5 +863,5 @@ function ClientBookingDetailsModal({ booking, onClose }: { booking: ClientBookin
         </Button>
       </div>
     </div>
-  )
+  );
 }

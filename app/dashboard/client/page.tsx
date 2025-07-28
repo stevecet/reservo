@@ -1,16 +1,30 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Clock, MapPin, Star, Search, Bell, Settings } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Star,
+  Search,
+  Bell,
+  Settings,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function ClientDashboard() {
-  const [activeTab, setActiveTab] = useState("upcoming")
+  const [activeTab, setActiveTab] = useState("upcoming");
 
   const upcomingBookings = [
     {
@@ -37,7 +51,7 @@ export default function ClientDashboard() {
       price: "$80",
       avatar: "/placeholder.svg?height=40&width=40",
     },
-  ]
+  ];
 
   const pastBookings = [
     {
@@ -66,7 +80,7 @@ export default function ClientDashboard() {
       rating: 4,
       avatar: "/placeholder.svg?height=40&width=40",
     },
-  ]
+  ];
 
   const favoriteProviders = [
     {
@@ -85,7 +99,7 @@ export default function ClientDashboard() {
       reviews: 203,
       avatar: "/placeholder.svg?height=40&width=40",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,7 +109,7 @@ export default function ClientDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
             </div>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="icon">
@@ -116,7 +130,9 @@ export default function ClientDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome back, John!</h1>
-          <p className="text-muted-foreground">Manage your bookings and discover new services</p>
+          <p className="text-muted-foreground">
+            Manage your bookings and discover new services
+          </p>
         </div>
 
         {/* Quick Actions */}
@@ -129,7 +145,9 @@ export default function ClientDashboard() {
                 </div>
                 <div>
                   <h3 className="font-semibold">Find Services</h3>
-                  <p className="text-sm text-muted-foreground">Browse and book new services</p>
+                  <p className="text-sm text-muted-foreground">
+                    Browse and book new services
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -143,7 +161,9 @@ export default function ClientDashboard() {
                 </div>
                 <div>
                   <h3 className="font-semibold">My Bookings</h3>
-                  <p className="text-sm text-muted-foreground">View upcoming appointments</p>
+                  <p className="text-sm text-muted-foreground">
+                    View upcoming appointments
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -157,7 +177,9 @@ export default function ClientDashboard() {
                 </div>
                 <div>
                   <h3 className="font-semibold">Favorites</h3>
-                  <p className="text-sm text-muted-foreground">Your saved providers</p>
+                  <p className="text-sm text-muted-foreground">
+                    Your saved providers
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -171,7 +193,9 @@ export default function ClientDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>My Bookings</CardTitle>
-                <CardDescription>Manage your appointments and booking history</CardDescription>
+                <CardDescription>
+                  Manage your appointments and booking history
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -187,7 +211,9 @@ export default function ClientDashboard() {
                           <div className="flex items-start justify-between">
                             <div className="flex items-start space-x-4">
                               <Avatar>
-                                <AvatarImage src={booking.avatar || "/placeholder.svg"} />
+                                <AvatarImage
+                                  src={booking.avatar || "/placeholder.svg"}
+                                />
                                 <AvatarFallback>
                                   {booking.provider
                                     .split(" ")
@@ -196,8 +222,12 @@ export default function ClientDashboard() {
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex-1">
-                                <h3 className="font-semibold">{booking.service}</h3>
-                                <p className="text-sm text-muted-foreground mb-2">with {booking.provider}</p>
+                                <h3 className="font-semibold">
+                                  {booking.service}
+                                </h3>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  with {booking.provider}
+                                </p>
                                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                   <div className="flex items-center space-x-1">
                                     <Calendar className="h-4 w-4" />
@@ -246,7 +276,9 @@ export default function ClientDashboard() {
                           <div className="flex items-start justify-between">
                             <div className="flex items-start space-x-4">
                               <Avatar>
-                                <AvatarImage src={booking.avatar || "/placeholder.svg"} />
+                                <AvatarImage
+                                  src={booking.avatar || "/placeholder.svg"}
+                                />
                                 <AvatarFallback>
                                   {booking.provider
                                     .split(" ")
@@ -255,8 +287,12 @@ export default function ClientDashboard() {
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex-1">
-                                <h3 className="font-semibold">{booking.service}</h3>
-                                <p className="text-sm text-muted-foreground mb-2">with {booking.provider}</p>
+                                <h3 className="font-semibold">
+                                  {booking.service}
+                                </h3>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  with {booking.provider}
+                                </p>
                                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                   <div className="flex items-center space-x-1">
                                     <Calendar className="h-4 w-4" />
@@ -274,12 +310,16 @@ export default function ClientDashboard() {
                                         <Star
                                           key={i}
                                           className={`h-4 w-4 ${
-                                            i < booking.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                                            i < booking.rating
+                                              ? "fill-yellow-400 text-yellow-400"
+                                              : "text-gray-300"
                                           }`}
                                         />
                                       ))}
                                     </div>
-                                    <span className="text-sm text-muted-foreground">Your rating</span>
+                                    <span className="text-sm text-muted-foreground">
+                                      Your rating
+                                    </span>
                                   </div>
                                 )}
                               </div>
@@ -317,9 +357,14 @@ export default function ClientDashboard() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {favoriteProviders.map((provider) => (
-                  <div key={provider.id} className="flex items-center space-x-3">
+                  <div
+                    key={provider.id}
+                    className="flex items-center space-x-3"
+                  >
                     <Avatar>
-                      <AvatarImage src={provider.avatar || "/placeholder.svg"} />
+                      <AvatarImage
+                        src={provider.avatar || "/placeholder.svg"}
+                      />
                       <AvatarFallback>
                         {provider.name
                           .split(" ")
@@ -329,7 +374,9 @@ export default function ClientDashboard() {
                     </Avatar>
                     <div className="flex-1">
                       <p className="font-medium">{provider.name}</p>
-                      <p className="text-sm text-muted-foreground">{provider.service}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {provider.service}
+                      </p>
                       <div className="flex items-center space-x-1">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                         <span className="text-xs">
@@ -367,12 +414,16 @@ export default function ClientDashboard() {
               <CardContent className="space-y-3">
                 <div className="text-sm">
                   <p className="font-medium">Booking confirmed</p>
-                  <p className="text-muted-foreground">Photography session with Sarah</p>
+                  <p className="text-muted-foreground">
+                    Photography session with Sarah
+                  </p>
                   <p className="text-xs text-muted-foreground">2 hours ago</p>
                 </div>
                 <div className="text-sm">
                   <p className="font-medium">Review submitted</p>
-                  <p className="text-muted-foreground">5-star review for Emma</p>
+                  <p className="text-muted-foreground">
+                    5-star review for Emma
+                  </p>
                   <p className="text-xs text-muted-foreground">1 day ago</p>
                 </div>
                 <div className="text-sm">
@@ -386,5 +437,5 @@ export default function ClientDashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }

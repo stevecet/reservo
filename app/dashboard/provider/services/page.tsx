@@ -1,15 +1,27 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +29,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Plus,
   Edit,
@@ -35,24 +47,29 @@ import {
   MoreHorizontal,
   Copy,
   Share,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Service {
-  id: number
-  name: string
-  description: string
-  duration: number
-  price: number
-  category: string
-  images: string[]
-  status: "active" | "inactive" | "draft"
-  bookings: number
-  rating: number
-  reviews: number
-  createdAt: string
-  updatedAt: string
+  id: number;
+  name: string;
+  description: string;
+  duration: number;
+  price: number;
+  category: string;
+  images: string[];
+  status: "active" | "inactive" | "draft";
+  bookings: number;
+  rating: number;
+  reviews: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function ServiceManagementPage() {
@@ -101,7 +118,10 @@ export default function ServiceManagementPage() {
       duration: 480,
       price: 800,
       category: "Photography",
-      images: ["/placeholder.svg?height=200&width=300", "/placeholder.svg?height=200&width=300"],
+      images: [
+        "/placeholder.svg?height=200&width=300",
+        "/placeholder.svg?height=200&width=300",
+      ],
       status: "draft",
       bookings: 0,
       rating: 0,
@@ -109,14 +129,14 @@ export default function ServiceManagementPage() {
       createdAt: "2024-01-15",
       updatedAt: "2024-01-15",
     },
-  ])
+  ]);
 
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [editingService, setEditingService] = useState<Service | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filterCategory, setFilterCategory] = useState("all")
-  const [filterStatus, setFilterStatus] = useState("all")
-  const { toast } = useToast()
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const { toast } = useToast();
 
   const categories = [
     "Photography",
@@ -128,17 +148,19 @@ export default function ServiceManagementPage() {
     "Health & Wellness",
     "Technology",
     "Creative Services",
-  ]
+  ];
 
   const filteredServices = services.filter((service) => {
     const matchesSearch =
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = filterCategory === "all" || service.category === filterCategory
-    const matchesStatus = filterStatus === "all" || service.status === filterStatus
+      service.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      filterCategory === "all" || service.category === filterCategory;
+    const matchesStatus =
+      filterStatus === "all" || service.status === filterStatus;
 
-    return matchesSearch && matchesCategory && matchesStatus
-  })
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
 
   const handleCreateService = (serviceData: Partial<Service>) => {
     const newService: Service = {
@@ -155,40 +177,44 @@ export default function ServiceManagementPage() {
       reviews: 0,
       createdAt: new Date().toISOString().split("T")[0],
       updatedAt: new Date().toISOString().split("T")[0],
-    }
+    };
 
-    setServices([...services, newService])
-    setIsCreateDialogOpen(false)
+    setServices([...services, newService]);
+    setIsCreateDialogOpen(false);
     toast({
       title: "Service Created",
       description: "Your new service has been created successfully.",
-    })
-  }
+    });
+  };
 
   const handleEditService = (serviceData: Partial<Service>) => {
-    if (!editingService) return
+    if (!editingService) return;
 
     const updatedServices = services.map((service) =>
       service.id === editingService.id
-        ? { ...service, ...serviceData, updatedAt: new Date().toISOString().split("T")[0] }
-        : service,
-    )
+        ? {
+            ...service,
+            ...serviceData,
+            updatedAt: new Date().toISOString().split("T")[0],
+          }
+        : service
+    );
 
-    setServices(updatedServices)
-    setEditingService(null)
+    setServices(updatedServices);
+    setEditingService(null);
     toast({
       title: "Service Updated",
       description: "Your service has been updated successfully.",
-    })
-  }
+    });
+  };
 
   const handleDeleteService = (serviceId: number) => {
-    setServices(services.filter((service) => service.id !== serviceId))
+    setServices(services.filter((service) => service.id !== serviceId));
     toast({
       title: "Service Deleted",
       description: "The service has been removed from your listings.",
-    })
-  }
+    });
+  };
 
   const handleToggleStatus = (serviceId: number) => {
     const updatedServices = services.map((service) =>
@@ -198,22 +224,24 @@ export default function ServiceManagementPage() {
             status: service.status === "active" ? "inactive" : "active",
             updatedAt: new Date().toISOString().split("T")[0],
           }
-        : service,
-    )
+        : service
+    );
 
-    setServices(updatedServices)
+    setServices(updatedServices);
     toast({
       title: "Status Updated",
       description: "Service status has been changed.",
-    })
-  }
+    });
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -223,7 +251,7 @@ export default function ServiceManagementPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
               <Badge variant="secondary">Provider</Badge>
             </div>
             <div className="flex items-center space-x-4">
@@ -247,9 +275,14 @@ export default function ServiceManagementPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Service Management</h1>
-            <p className="text-muted-foreground">Create and manage your service offerings</p>
+            <p className="text-muted-foreground">
+              Create and manage your service offerings
+            </p>
           </div>
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
@@ -260,10 +293,14 @@ export default function ServiceManagementPage() {
               <DialogHeader>
                 <DialogTitle>Create New Service</DialogTitle>
                 <DialogDescription>
-                  Add a new service to your offerings. Fill in all the details to attract more clients.
+                  Add a new service to your offerings. Fill in all the details
+                  to attract more clients.
                 </DialogDescription>
               </DialogHeader>
-              <ServiceForm onSubmit={handleCreateService} onCancel={() => setIsCreateDialogOpen(false)} />
+              <ServiceForm
+                onSubmit={handleCreateService}
+                onCancel={() => setIsCreateDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -312,18 +349,27 @@ export default function ServiceManagementPage() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service) => (
-            <Card key={service.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card
+              key={service.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow"
+            >
               {/* Service Image */}
               <div className="aspect-video relative">
                 <img
-                  src={service.images[0] || "/placeholder.svg?height=200&width=300"}
+                  src={
+                    service.images[0] || "/placeholder.svg?height=200&width=300"
+                  }
                   alt={service.name}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-2 left-2">
                   <Badge
                     variant={
-                      service.status === "active" ? "default" : service.status === "inactive" ? "secondary" : "outline"
+                      service.status === "active"
+                        ? "default"
+                        : service.status === "inactive"
+                        ? "secondary"
+                        : "outline"
                     }
                   >
                     {service.status}
@@ -332,16 +378,24 @@ export default function ServiceManagementPage() {
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="secondary" size="icon" className="h-8 w-8">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-8 w-8"
+                      >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => setEditingService(service)}>
+                      <DropdownMenuItem
+                        onClick={() => setEditingService(service)}
+                      >
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleToggleStatus(service.id)}>
+                      <DropdownMenuItem
+                        onClick={() => handleToggleStatus(service.id)}
+                      >
                         {service.status === "active" ? (
                           <>
                             <EyeOff className="h-4 w-4 mr-2" />
@@ -362,7 +416,10 @@ export default function ServiceManagementPage() {
                         <Share className="h-4 w-4 mr-2" />
                         Share
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDeleteService(service.id)} className="text-red-600">
+                      <DropdownMenuItem
+                        onClick={() => handleDeleteService(service.id)}
+                        className="text-red-600"
+                      >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
                       </DropdownMenuItem>
@@ -374,13 +431,17 @@ export default function ServiceManagementPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-lg line-clamp-1">{service.name}</CardTitle>
+                    <CardTitle className="text-lg line-clamp-1">
+                      {service.name}
+                    </CardTitle>
                     <Badge variant="outline" className="mt-1 text-xs">
                       {service.category}
                     </Badge>
                   </div>
                 </div>
-                <CardDescription className="line-clamp-2 mt-2">{service.description}</CardDescription>
+                <CardDescription className="line-clamp-2 mt-2">
+                  {service.description}
+                </CardDescription>
               </CardHeader>
 
               <CardContent className="pt-0">
@@ -392,7 +453,9 @@ export default function ServiceManagementPage() {
                   </div>
                   <div className="flex items-center space-x-1">
                     <DollarSign className="h-4 w-4" />
-                    <span className="font-semibold text-foreground">${service.price}</span>
+                    <span className="font-semibold text-foreground">
+                      ${service.price}
+                    </span>
                   </div>
                 </div>
 
@@ -406,7 +469,9 @@ export default function ServiceManagementPage() {
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="font-medium">{service.rating}</span>
-                      <span className="text-muted-foreground">({service.reviews})</span>
+                      <span className="text-muted-foreground">
+                        ({service.reviews})
+                      </span>
                     </div>
                   )}
                 </div>
@@ -423,7 +488,9 @@ export default function ServiceManagementPage() {
                     Edit
                   </Button>
                   <Button
-                    variant={service.status === "active" ? "secondary" : "default"}
+                    variant={
+                      service.status === "active" ? "secondary" : "default"
+                    }
                     size="sm"
                     className="flex-1"
                     onClick={() => handleToggleStatus(service.id)}
@@ -451,30 +518,41 @@ export default function ServiceManagementPage() {
             <CardContent>
               <div className="text-muted-foreground mb-4">
                 <Plus className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-semibold mb-2">No services found</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  No services found
+                </h3>
                 <p>
-                  {searchTerm || filterCategory !== "all" || filterStatus !== "all"
+                  {searchTerm ||
+                  filterCategory !== "all" ||
+                  filterStatus !== "all"
                     ? "Try adjusting your search or filters"
                     : "Create your first service to start accepting bookings"}
                 </p>
               </div>
-              {!searchTerm && filterCategory === "all" && filterStatus === "all" && (
-                <Button onClick={() => setIsCreateDialogOpen(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Service
-                </Button>
-              )}
+              {!searchTerm &&
+                filterCategory === "all" &&
+                filterStatus === "all" && (
+                  <Button onClick={() => setIsCreateDialogOpen(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Your First Service
+                  </Button>
+                )}
             </CardContent>
           </Card>
         )}
 
         {/* Edit Service Dialog */}
         {editingService && (
-          <Dialog open={!!editingService} onOpenChange={() => setEditingService(null)}>
+          <Dialog
+            open={!!editingService}
+            onOpenChange={() => setEditingService(null)}
+          >
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Edit Service</DialogTitle>
-                <DialogDescription>Update your service details to keep your offerings current.</DialogDescription>
+                <DialogDescription>
+                  Update your service details to keep your offerings current.
+                </DialogDescription>
               </DialogHeader>
               <ServiceForm
                 service={editingService}
@@ -486,7 +564,7 @@ export default function ServiceManagementPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Service Form Component
@@ -495,9 +573,9 @@ function ServiceForm({
   onSubmit,
   onCancel,
 }: {
-  service?: Service
-  onSubmit: (data: Partial<Service>) => void
-  onCancel: () => void
+  service?: Service;
+  onSubmit: (data: Partial<Service>) => void;
+  onCancel: () => void;
 }) {
   const [formData, setFormData] = useState({
     name: service?.name || "",
@@ -506,10 +584,10 @@ function ServiceForm({
     price: service?.price || 0,
     category: service?.category || "",
     images: service?.images || [],
-  })
+  });
 
-  const [imageUrls, setImageUrls] = useState<string[]>(service?.images || [])
-  const [newImageUrl, setNewImageUrl] = useState("")
+  const [imageUrls, setImageUrls] = useState<string[]>(service?.images || []);
+  const [newImageUrl, setNewImageUrl] = useState("");
 
   const categories = [
     "Photography",
@@ -521,26 +599,26 @@ function ServiceForm({
     "Health & Wellness",
     "Technology",
     "Creative Services",
-  ]
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     onSubmit({
       ...formData,
       images: imageUrls,
-    })
-  }
+    });
+  };
 
   const addImage = () => {
     if (newImageUrl.trim()) {
-      setImageUrls([...imageUrls, newImageUrl.trim()])
-      setNewImageUrl("")
+      setImageUrls([...imageUrls, newImageUrl.trim()]);
+      setNewImageUrl("");
     }
-  }
+  };
 
   const removeImage = (index: number) => {
-    setImageUrls(imageUrls.filter((_, i) => i !== index))
-  }
+    setImageUrls(imageUrls.filter((_, i) => i !== index));
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -562,7 +640,9 @@ function ServiceForm({
           <Textarea
             id="description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             placeholder="Detailed explanation of your service..."
             className="min-h-[100px]"
             required
@@ -576,7 +656,12 @@ function ServiceForm({
               id="duration"
               type="number"
               value={formData.duration}
-              onChange={(e) => setFormData({ ...formData, duration: Number.parseInt(e.target.value) || 0 })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  duration: Number.parseInt(e.target.value) || 0,
+                })
+              }
               min="15"
               step="15"
               required
@@ -589,7 +674,12 @@ function ServiceForm({
               id="price"
               type="number"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: Number.parseFloat(e.target.value) || 0 })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  price: Number.parseFloat(e.target.value) || 0,
+                })
+              }
               min="0"
               step="0.01"
               required
@@ -600,7 +690,9 @@ function ServiceForm({
             <Label htmlFor="category">Category *</Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
               required
             >
               <SelectTrigger>
@@ -661,7 +753,8 @@ function ServiceForm({
         )}
 
         <p className="text-sm text-muted-foreground">
-          Add images to showcase your service. The first image will be used as the main thumbnail.
+          Add images to showcase your service. The first image will be used as
+          the main thumbnail.
         </p>
       </div>
 
@@ -670,8 +763,10 @@ function ServiceForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">{service ? "Update Service" : "Create Service"}</Button>
+        <Button type="submit">
+          {service ? "Update Service" : "Create Service"}
+        </Button>
       </div>
     </form>
-  )
+  );
 }

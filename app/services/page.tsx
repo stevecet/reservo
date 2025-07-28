@@ -255,7 +255,7 @@ export default function ServiceDiscoveryPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
               <Link href="/" className="text-muted-foreground hover:text-foreground">

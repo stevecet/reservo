@@ -1,16 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Clock, MapPin, Star, Plus, DollarSign, Users, TrendingUp, Bell, Settings } from "lucide-react"
-import { Progress } from "@/components/ui/progress"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Star,
+  Plus,
+  DollarSign,
+  Users,
+  TrendingUp,
+  Bell,
+  Settings,
+} from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 export default function ProviderDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState("overview");
 
   const stats = [
     {
@@ -41,7 +58,7 @@ export default function ProviderDashboard() {
       icon: Star,
       color: "text-yellow-600",
     },
-  ]
+  ];
 
   const upcomingBookings = [
     {
@@ -68,7 +85,7 @@ export default function ProviderDashboard() {
       price: "$150",
       avatar: "/placeholder.svg?height=40&width=40",
     },
-  ]
+  ];
 
   const services = [
     {
@@ -95,7 +112,7 @@ export default function ProviderDashboard() {
       rating: 5.0,
       status: "active",
     },
-  ]
+  ];
 
   const recentReviews = [
     {
@@ -114,7 +131,7 @@ export default function ProviderDashboard() {
       date: "2024-01-08",
       service: "Portrait Photography",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -124,7 +141,7 @@ export default function ProviderDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
               <Badge variant="secondary">Provider</Badge>
             </div>
             <div className="flex items-center space-x-4">
@@ -146,7 +163,9 @@ export default function ProviderDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome back, Sarah!</h1>
-          <p className="text-muted-foreground">Manage your services and bookings</p>
+          <p className="text-muted-foreground">
+            Manage your services and bookings
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -156,11 +175,17 @@ export default function ProviderDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </p>
                     <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-green-600">{stat.change} from last month</p>
+                    <p className="text-xs text-green-600">
+                      {stat.change} from last month
+                    </p>
                   </div>
-                  <div className={`w-12 h-12 rounded-lg bg-muted flex items-center justify-center`}>
+                  <div
+                    className={`w-12 h-12 rounded-lg bg-muted flex items-center justify-center`}
+                  >
                     <stat.icon className={`h-6 w-6 ${stat.color}`} />
                   </div>
                 </div>
@@ -200,7 +225,9 @@ export default function ProviderDashboard() {
                           <div className="flex items-start justify-between">
                             <div className="flex items-start space-x-4">
                               <Avatar>
-                                <AvatarImage src={booking.avatar || "/placeholder.svg"} />
+                                <AvatarImage
+                                  src={booking.avatar || "/placeholder.svg"}
+                                />
                                 <AvatarFallback>
                                   {booking.client
                                     .split(" ")
@@ -209,8 +236,12 @@ export default function ProviderDashboard() {
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex-1">
-                                <h3 className="font-semibold">{booking.service}</h3>
-                                <p className="text-sm text-muted-foreground mb-2">with {booking.client}</p>
+                                <h3 className="font-semibold">
+                                  {booking.service}
+                                </h3>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  with {booking.client}
+                                </p>
                                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                   <div className="flex items-center space-x-1">
                                     <Calendar className="h-4 w-4" />
@@ -296,11 +327,17 @@ export default function ProviderDashboard() {
                       <Plus className="h-4 w-4 mr-2" />
                       Add New Service
                     </Button>
-                    <Button variant="outline" className="w-full justify-start bg-transparent">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start bg-transparent"
+                    >
                       <Calendar className="h-4 w-4 mr-2" />
                       Set Availability
                     </Button>
-                    <Button variant="outline" className="w-full justify-start bg-transparent">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start bg-transparent"
+                    >
                       <TrendingUp className="h-4 w-4 mr-2" />
                       View Analytics
                     </Button>
@@ -315,8 +352,12 @@ export default function ProviderDashboard() {
                   <CardContent className="space-y-3">
                     <div className="text-sm">
                       <p className="font-medium">New booking received</p>
-                      <p className="text-muted-foreground">John Doe - Photography</p>
-                      <p className="text-xs text-muted-foreground">2 hours ago</p>
+                      <p className="text-muted-foreground">
+                        John Doe - Photography
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        2 hours ago
+                      </p>
                     </div>
                     <div className="text-sm">
                       <p className="font-medium">5-star review received</p>
@@ -325,8 +366,12 @@ export default function ProviderDashboard() {
                     </div>
                     <div className="text-sm">
                       <p className="font-medium">Payment received</p>
-                      <p className="text-muted-foreground">$150 for portrait session</p>
-                      <p className="text-xs text-muted-foreground">2 days ago</p>
+                      <p className="text-muted-foreground">
+                        $150 for portrait session
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        2 days ago
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -339,7 +384,9 @@ export default function ProviderDashboard() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>My Services</CardTitle>
-                  <CardDescription>Manage your service offerings</CardDescription>
+                  <CardDescription>
+                    Manage your service offerings
+                  </CardDescription>
                 </div>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
@@ -364,7 +411,13 @@ export default function ProviderDashboard() {
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <Badge variant={service.status === "active" ? "default" : "secondary"}>
+                            <Badge
+                              variant={
+                                service.status === "active"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
                               {service.status}
                             </Badge>
                             <Button variant="outline" size="sm">
@@ -384,7 +437,9 @@ export default function ProviderDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Client Reviews</CardTitle>
-                <CardDescription>See what your clients are saying</CardDescription>
+                <CardDescription>
+                  See what your clients are saying
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -394,7 +449,9 @@ export default function ProviderDashboard() {
                         <div className="flex items-start space-x-4">
                           <Avatar>
                             <AvatarImage
-                              src={`/placeholder.svg?height=40&width=40&query=${review.client.toLowerCase().replace(" ", "-")}`}
+                              src={`/placeholder.svg?height=40&width=40&query=${review.client
+                                .toLowerCase()
+                                .replace(" ", "-")}`}
                             />
                             <AvatarFallback>
                               {review.client
@@ -406,7 +463,9 @@ export default function ProviderDashboard() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
                               <h3 className="font-semibold">{review.client}</h3>
-                              <span className="text-sm text-muted-foreground">{review.date}</span>
+                              <span className="text-sm text-muted-foreground">
+                                {review.date}
+                              </span>
                             </div>
                             <div className="flex items-center space-x-2 mb-2">
                               <div className="flex">
@@ -414,14 +473,18 @@ export default function ProviderDashboard() {
                                   <Star
                                     key={i}
                                     className={`h-4 w-4 ${
-                                      i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                                      i < review.rating
+                                        ? "fill-yellow-400 text-yellow-400"
+                                        : "text-gray-300"
                                     }`}
                                   />
                                 ))}
                               </div>
                               <Badge variant="outline">{review.service}</Badge>
                             </div>
-                            <p className="text-muted-foreground">{review.comment}</p>
+                            <p className="text-muted-foreground">
+                              {review.comment}
+                            </p>
                           </div>
                         </div>
                       </CardContent>
@@ -446,7 +509,9 @@ export default function ProviderDashboard() {
                         <div className="flex items-start justify-between">
                           <div className="flex items-start space-x-4">
                             <Avatar>
-                              <AvatarImage src={booking.avatar || "/placeholder.svg"} />
+                              <AvatarImage
+                                src={booking.avatar || "/placeholder.svg"}
+                              />
                               <AvatarFallback>
                                 {booking.client
                                   .split(" ")
@@ -455,8 +520,12 @@ export default function ProviderDashboard() {
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
-                              <h3 className="font-semibold">{booking.service}</h3>
-                              <p className="text-sm text-muted-foreground mb-2">with {booking.client}</p>
+                              <h3 className="font-semibold">
+                                {booking.service}
+                              </h3>
+                              <p className="text-sm text-muted-foreground mb-2">
+                                with {booking.client}
+                              </p>
                               <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                 <div className="flex items-center space-x-1">
                                   <Calendar className="h-4 w-4" />
@@ -503,5 +572,5 @@ export default function ProviderDashboard() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

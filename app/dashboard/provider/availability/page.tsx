@@ -1,16 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -18,33 +30,41 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Plus, Edit, Trash2, Bell, Settings, Save } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Calendar,
+  Plus,
+  Edit,
+  Trash2,
+  Bell,
+  Settings,
+  Save,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface WorkingHours {
-  day: string
-  enabled: boolean
-  startTime: string
-  endTime: string
+  day: string;
+  enabled: boolean;
+  startTime: string;
+  endTime: string;
 }
 
 interface BlockedTime {
-  id: number
-  date: string
-  startTime: string
-  endTime: string
-  reason: string
-  type: "vacation" | "appointment" | "break" | "other"
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  reason: string;
+  type: "vacation" | "appointment" | "break" | "other";
 }
 
 interface AvailabilitySettings {
-  bufferTime: number
-  advanceBooking: number
-  maxBookingsPerDay: number
-  autoAccept: boolean
+  bufferTime: number;
+  advanceBooking: number;
+  maxBookingsPerDay: number;
+  autoAccept: boolean;
 }
 
 export default function AvailabilityManagementPage() {
@@ -56,7 +76,7 @@ export default function AvailabilityManagementPage() {
     { day: "Friday", enabled: true, startTime: "09:00", endTime: "17:00" },
     { day: "Saturday", enabled: false, startTime: "10:00", endTime: "16:00" },
     { day: "Sunday", enabled: false, startTime: "10:00", endTime: "16:00" },
-  ])
+  ]);
 
   const [blockedTimes, setBlockedTimes] = useState<BlockedTime[]>([
     {
@@ -75,81 +95,91 @@ export default function AvailabilityManagementPage() {
       reason: "Holiday - Christmas",
       type: "vacation",
     },
-  ])
+  ]);
 
-  const [availabilitySettings, setAvailabilitySettings] = useState<AvailabilitySettings>({
-    bufferTime: 15,
-    advanceBooking: 7,
-    maxBookingsPerDay: 8,
-    autoAccept: true,
-  })
+  const [availabilitySettings, setAvailabilitySettings] =
+    useState<AvailabilitySettings>({
+      bufferTime: 15,
+      advanceBooking: 7,
+      maxBookingsPerDay: 8,
+      autoAccept: true,
+    });
 
-  const [isBlockTimeDialogOpen, setIsBlockTimeDialogOpen] = useState(false)
-  const [editingBlockedTime, setEditingBlockedTime] = useState<BlockedTime | null>(null)
-  const { toast } = useToast()
+  const [isBlockTimeDialogOpen, setIsBlockTimeDialogOpen] = useState(false);
+  const [editingBlockedTime, setEditingBlockedTime] =
+    useState<BlockedTime | null>(null);
+  const { toast } = useToast();
 
-  const updateWorkingHours = (dayIndex: number, field: keyof WorkingHours, value: string | boolean) => {
-    const updated = [...workingHours]
-    updated[dayIndex] = { ...updated[dayIndex], [field]: value }
-    setWorkingHours(updated)
-  }
+  const updateWorkingHours = (
+    dayIndex: number,
+    field: keyof WorkingHours,
+    value: string | boolean
+  ) => {
+    const updated = [...workingHours];
+    updated[dayIndex] = { ...updated[dayIndex], [field]: value };
+    setWorkingHours(updated);
+  };
 
   const saveWorkingHours = () => {
     toast({
       title: "Working Hours Updated",
       description: "Your availability schedule has been saved successfully.",
-    })
-  }
+    });
+  };
 
   const addBlockedTime = (blockedTime: Omit<BlockedTime, "id">) => {
     const newBlockedTime: BlockedTime = {
       ...blockedTime,
       id: Date.now(),
-    }
-    setBlockedTimes([...blockedTimes, newBlockedTime])
-    setIsBlockTimeDialogOpen(false)
+    };
+    setBlockedTimes([...blockedTimes, newBlockedTime]);
+    setIsBlockTimeDialogOpen(false);
     toast({
       title: "Time Blocked",
       description: "The selected time has been marked as unavailable.",
-    })
-  }
+    });
+  };
 
   const updateBlockedTime = (updatedTime: BlockedTime) => {
-    setBlockedTimes(blockedTimes.map((time) => (time.id === updatedTime.id ? updatedTime : time)))
-    setEditingBlockedTime(null)
+    setBlockedTimes(
+      blockedTimes.map((time) =>
+        time.id === updatedTime.id ? updatedTime : time
+      )
+    );
+    setEditingBlockedTime(null);
     toast({
       title: "Blocked Time Updated",
       description: "The blocked time has been updated successfully.",
-    })
-  }
+    });
+  };
 
   const removeBlockedTime = (id: number) => {
-    setBlockedTimes(blockedTimes.filter((time) => time.id !== id))
+    setBlockedTimes(blockedTimes.filter((time) => time.id !== id));
     toast({
       title: "Time Unblocked",
       description: "The time slot is now available for bookings.",
-    })
-  }
+    });
+  };
 
   const saveAvailabilitySettings = () => {
     toast({
       title: "Settings Saved",
       description: "Your availability preferences have been updated.",
-    })
-  }
+    });
+  };
 
   const getBlockTypeColor = (type: string) => {
     switch (type) {
       case "vacation":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "appointment":
-        return "bg-orange-100 text-orange-800"
+        return "bg-orange-100 text-orange-800";
       case "break":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -159,7 +189,7 @@ export default function AvailabilityManagementPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
               <Badge variant="secondary">Provider</Badge>
             </div>
             <div className="flex items-center space-x-4">
@@ -182,7 +212,9 @@ export default function AvailabilityManagementPage() {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Availability Management</h1>
-          <p className="text-muted-foreground">Set your working hours and manage your schedule</p>
+          <p className="text-muted-foreground">
+            Set your working hours and manage your schedule
+          </p>
         </div>
 
         <Tabs defaultValue="working-hours" className="space-y-6">
@@ -197,37 +229,54 @@ export default function AvailabilityManagementPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Weekly Schedule</CardTitle>
-                <CardDescription>Set your regular working hours for each day of the week</CardDescription>
+                <CardDescription>
+                  Set your regular working hours for each day of the week
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {workingHours.map((day, index) => (
-                  <div key={day.day} className="flex items-center space-x-4 p-4 border rounded-lg">
+                  <div
+                    key={day.day}
+                    className="flex items-center space-x-4 p-4 border rounded-lg"
+                  >
                     <div className="w-24">
                       <Label className="font-medium">{day.day}</Label>
                     </div>
                     <Switch
                       checked={day.enabled}
-                      onCheckedChange={(checked) => updateWorkingHours(index, "enabled", checked)}
+                      onCheckedChange={(checked) =>
+                        updateWorkingHours(index, "enabled", checked)
+                      }
                     />
                     {day.enabled ? (
                       <div className="flex items-center space-x-2 flex-1">
                         <Input
                           type="time"
                           value={day.startTime}
-                          onChange={(e) => updateWorkingHours(index, "startTime", e.target.value)}
+                          onChange={(e) =>
+                            updateWorkingHours(
+                              index,
+                              "startTime",
+                              e.target.value
+                            )
+                          }
                           className="w-32"
                         />
                         <span className="text-muted-foreground">to</span>
                         <Input
                           type="time"
                           value={day.endTime}
-                          onChange={(e) => updateWorkingHours(index, "endTime", e.target.value)}
+                          onChange={(e) =>
+                            updateWorkingHours(index, "endTime", e.target.value)
+                          }
                           className="w-32"
                         />
                       </div>
                     ) : (
                       <div className="flex-1">
-                        <span className="text-muted-foreground">Unavailable</span>
+                        <span className="text-muted-foreground">
+                          Unavailable
+                        </span>
                       </div>
                     )}
                   </div>
@@ -248,9 +297,14 @@ export default function AvailabilityManagementPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>Blocked Times</CardTitle>
-                  <CardDescription>Mark specific dates or times as unavailable</CardDescription>
+                  <CardDescription>
+                    Mark specific dates or times as unavailable
+                  </CardDescription>
                 </div>
-                <Dialog open={isBlockTimeDialogOpen} onOpenChange={setIsBlockTimeDialogOpen}>
+                <Dialog
+                  open={isBlockTimeDialogOpen}
+                  onOpenChange={setIsBlockTimeDialogOpen}
+                >
                   <DialogTrigger asChild>
                     <Button>
                       <Plus className="h-4 w-4 mr-2" />
@@ -260,9 +314,15 @@ export default function AvailabilityManagementPage() {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Block Time Slot</DialogTitle>
-                      <DialogDescription>Mark a specific date and time as unavailable for bookings</DialogDescription>
+                      <DialogDescription>
+                        Mark a specific date and time as unavailable for
+                        bookings
+                      </DialogDescription>
                     </DialogHeader>
-                    <BlockTimeForm onSubmit={addBlockedTime} onCancel={() => setIsBlockTimeDialogOpen(false)} />
+                    <BlockTimeForm
+                      onSubmit={addBlockedTime}
+                      onCancel={() => setIsBlockTimeDialogOpen(false)}
+                    />
                   </DialogContent>
                 </Dialog>
               </CardHeader>
@@ -272,26 +332,47 @@ export default function AvailabilityManagementPage() {
                     <div className="text-center py-8 text-muted-foreground">
                       <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p>No blocked times set</p>
-                      <p className="text-sm">Block specific dates or times when you're unavailable</p>
+                      <p className="text-sm">
+                        Block specific dates or times when you're unavailable
+                      </p>
                     </div>
                   ) : (
                     blockedTimes.map((blockedTime) => (
-                      <div key={blockedTime.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div
+                        key={blockedTime.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-2">
-                            <Badge className={getBlockTypeColor(blockedTime.type)}>{blockedTime.type}</Badge>
-                            <span className="font-medium">{blockedTime.date}</span>
+                            <Badge
+                              className={getBlockTypeColor(blockedTime.type)}
+                            >
+                              {blockedTime.type}
+                            </Badge>
+                            <span className="font-medium">
+                              {blockedTime.date}
+                            </span>
                             <span className="text-muted-foreground">
                               {blockedTime.startTime} - {blockedTime.endTime}
                             </span>
                           </div>
-                          <p className="text-sm text-muted-foreground">{blockedTime.reason}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {blockedTime.reason}
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Button variant="outline" size="sm" onClick={() => setEditingBlockedTime(blockedTime)}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setEditingBlockedTime(blockedTime)}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm" onClick={() => removeBlockedTime(blockedTime.id)}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeBlockedTime(blockedTime.id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -308,7 +389,9 @@ export default function AvailabilityManagementPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Availability Settings</CardTitle>
-                <CardDescription>Configure your booking preferences and constraints</CardDescription>
+                <CardDescription>
+                  Configure your booking preferences and constraints
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -333,7 +416,9 @@ export default function AvailabilityManagementPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="advance-booking">Advance Booking (days)</Label>
+                    <Label htmlFor="advance-booking">
+                      Advance Booking (days)
+                    </Label>
                     <Input
                       id="advance-booking"
                       type="number"
@@ -347,7 +432,9 @@ export default function AvailabilityManagementPage() {
                       min="0"
                       max="365"
                     />
-                    <p className="text-sm text-muted-foreground">How far in advance clients can book appointments</p>
+                    <p className="text-sm text-muted-foreground">
+                      How far in advance clients can book appointments
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -359,13 +446,16 @@ export default function AvailabilityManagementPage() {
                       onChange={(e) =>
                         setAvailabilitySettings({
                           ...availabilitySettings,
-                          maxBookingsPerDay: Number.parseInt(e.target.value) || 0,
+                          maxBookingsPerDay:
+                            Number.parseInt(e.target.value) || 0,
                         })
                       }
                       min="1"
                       max="20"
                     />
-                    <p className="text-sm text-muted-foreground">Maximum number of appointments per day</p>
+                    <p className="text-sm text-muted-foreground">
+                      Maximum number of appointments per day
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -401,11 +491,16 @@ export default function AvailabilityManagementPage() {
 
         {/* Edit Blocked Time Dialog */}
         {editingBlockedTime && (
-          <Dialog open={!!editingBlockedTime} onOpenChange={() => setEditingBlockedTime(null)}>
+          <Dialog
+            open={!!editingBlockedTime}
+            onOpenChange={() => setEditingBlockedTime(null)}
+          >
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Edit Blocked Time</DialogTitle>
-                <DialogDescription>Update the blocked time slot details</DialogDescription>
+                <DialogDescription>
+                  Update the blocked time slot details
+                </DialogDescription>
               </DialogHeader>
               <BlockTimeForm
                 blockedTime={editingBlockedTime}
@@ -417,7 +512,7 @@ export default function AvailabilityManagementPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Block Time Form Component
@@ -426,26 +521,28 @@ function BlockTimeForm({
   onSubmit,
   onCancel,
 }: {
-  blockedTime?: BlockedTime
-  onSubmit: (data: BlockedTime | Omit<BlockedTime, "id">) => void
-  onCancel: () => void
+  blockedTime?: BlockedTime;
+  onSubmit: (data: BlockedTime | Omit<BlockedTime, "id">) => void;
+  onCancel: () => void;
 }) {
   const [formData, setFormData] = useState({
     date: blockedTime?.date || "",
     startTime: blockedTime?.startTime || "09:00",
     endTime: blockedTime?.endTime || "17:00",
     reason: blockedTime?.reason || "",
-    type: (blockedTime?.type as "vacation" | "appointment" | "break" | "other") || "appointment",
-  })
+    type:
+      (blockedTime?.type as "vacation" | "appointment" | "break" | "other") ||
+      "appointment",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (blockedTime) {
-      onSubmit({ ...blockedTime, ...formData })
+      onSubmit({ ...blockedTime, ...formData });
     } else {
-      onSubmit(formData)
+      onSubmit(formData);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -467,7 +564,9 @@ function BlockTimeForm({
             id="start-time"
             type="time"
             value={formData.startTime}
-            onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, startTime: e.target.value })
+            }
             required
           />
         </div>
@@ -477,7 +576,9 @@ function BlockTimeForm({
             id="end-time"
             type="time"
             value={formData.endTime}
-            onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, endTime: e.target.value })
+            }
             required
           />
         </div>
@@ -485,7 +586,12 @@ function BlockTimeForm({
 
       <div className="space-y-2">
         <Label htmlFor="type">Type</Label>
-        <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value as any })}>
+        <Select
+          value={formData.type}
+          onValueChange={(value) =>
+            setFormData({ ...formData, type: value as any })
+          }
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -516,5 +622,5 @@ function BlockTimeForm({
         <Button type="submit">{blockedTime ? "Update" : "Block Time"}</Button>
       </div>
     </form>
-  )
+  );
 }

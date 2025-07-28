@@ -1,15 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Calendar,
   Clock,
@@ -24,58 +30,63 @@ import {
   CalendarIcon,
   Bell,
   Settings,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import Link from "next/link"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 interface Service {
-  id: number
-  name: string
-  description: string
-  duration: number
-  price: number
-  category: string
-  images: string[]
+  id: number;
+  name: string;
+  description: string;
+  duration: number;
+  price: number;
+  category: string;
+  images: string[];
 }
 
 interface Provider {
-  id: number
-  name: string
-  avatar: string
-  rating: number
-  reviews: number
-  location: string
-  verified: boolean
-  services: Service[]
+  id: number;
+  name: string;
+  avatar: string;
+  rating: number;
+  reviews: number;
+  location: string;
+  verified: boolean;
+  services: Service[];
   workingHours: {
-    [key: string]: { enabled: boolean; startTime: string; endTime: string }
-  }
+    [key: string]: { enabled: boolean; startTime: string; endTime: string };
+  };
   blockedTimes: Array<{
-    date: string
-    startTime: string
-    endTime: string
-  }>
-  bufferTime: number
+    date: string;
+    startTime: string;
+    endTime: string;
+  }>;
+  bufferTime: number;
 }
 
 interface BookingDetails {
-  service: Service | null
-  provider: Provider | null
-  date: string
-  time: string
+  service: Service | null;
+  provider: Provider | null;
+  date: string;
+  time: string;
   clientInfo: {
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    notes: string
-  }
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    notes: string;
+  };
 }
 
-type BookingStep = "service" | "provider" | "datetime" | "details" | "confirmation"
+type BookingStep =
+  | "service"
+  | "provider"
+  | "datetime"
+  | "details"
+  | "confirmation";
 
 export default function BookingFlowPage() {
-  const [currentStep, setCurrentStep] = useState<BookingStep>("service")
+  const [currentStep, setCurrentStep] = useState<BookingStep>("service");
   const [bookingDetails, setBookingDetails] = useState<BookingDetails>({
     service: null,
     provider: null,
@@ -88,13 +99,14 @@ export default function BookingFlowPage() {
       phone: "",
       notes: "",
     },
-  })
+  });
 
   const [services] = useState<Service[]>([
     {
       id: 1,
       name: "Professional Photography Session",
-      description: "Comprehensive photography session including portrait, lifestyle, and creative shots.",
+      description:
+        "Comprehensive photography session including portrait, lifestyle, and creative shots.",
       duration: 120,
       price: 300,
       category: "Photography",
@@ -103,7 +115,8 @@ export default function BookingFlowPage() {
     {
       id: 2,
       name: "Personal Training Session",
-      description: "One-on-one fitness training session tailored to your goals.",
+      description:
+        "One-on-one fitness training session tailored to your goals.",
       duration: 60,
       price: 80,
       category: "Fitness",
@@ -112,13 +125,14 @@ export default function BookingFlowPage() {
     {
       id: 3,
       name: "Hair Cut & Styling",
-      description: "Professional hair cutting and styling service with premium products.",
+      description:
+        "Professional hair cutting and styling service with premium products.",
       duration: 90,
       price: 65,
       category: "Beauty",
       images: ["/placeholder.svg?height=200&width=300"],
     },
-  ])
+  ]);
 
   const [providers] = useState<Provider[]>([
     {
@@ -139,7 +153,9 @@ export default function BookingFlowPage() {
         Saturday: { enabled: false, startTime: "10:00", endTime: "16:00" },
         Sunday: { enabled: false, startTime: "10:00", endTime: "16:00" },
       },
-      blockedTimes: [{ date: "2024-01-20", startTime: "10:00", endTime: "12:00" }],
+      blockedTimes: [
+        { date: "2024-01-20", startTime: "10:00", endTime: "12:00" },
+      ],
       bufferTime: 15,
     },
     {
@@ -184,51 +200,64 @@ export default function BookingFlowPage() {
       blockedTimes: [],
       bufferTime: 15,
     },
-  ])
+  ]);
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const getAvailableProviders = (serviceId: number) => {
-    return providers.filter((provider) => provider.services.some((service) => service.id === serviceId))
-  }
+    return providers.filter((provider) =>
+      provider.services.some((service) => service.id === serviceId)
+    );
+  };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+    if (minutes < 60) return `${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
+  };
 
   const handleServiceSelect = (service: Service) => {
-    setBookingDetails((prev) => ({ ...prev, service, provider: null, date: "", time: "" }))
-    setCurrentStep("provider")
-  }
+    setBookingDetails((prev) => ({
+      ...prev,
+      service,
+      provider: null,
+      date: "",
+      time: "",
+    }));
+    setCurrentStep("provider");
+  };
 
   const handleProviderSelect = (provider: Provider) => {
-    setBookingDetails((prev) => ({ ...prev, provider }))
-    setCurrentStep("datetime")
-  }
+    setBookingDetails((prev) => ({ ...prev, provider }));
+    setCurrentStep("datetime");
+  };
 
   const handleDateTimeSelect = (date: string, time: string) => {
-    setBookingDetails((prev) => ({ ...prev, date, time }))
-    setCurrentStep("details")
-  }
+    setBookingDetails((prev) => ({ ...prev, date, time }));
+    setCurrentStep("details");
+  };
 
-  const handleClientDetailsSubmit = (clientInfo: BookingDetails["clientInfo"]) => {
-    setBookingDetails((prev) => ({ ...prev, clientInfo }))
-    setCurrentStep("confirmation")
-  }
+  const handleClientDetailsSubmit = (
+    clientInfo: BookingDetails["clientInfo"]
+  ) => {
+    setBookingDetails((prev) => ({ ...prev, clientInfo }));
+    setCurrentStep("confirmation");
+  };
 
   const handleBookingSubmit = () => {
     // Simulate booking submission
     toast({
       title: "Booking Confirmed!",
-      description: "Your appointment has been successfully booked. You'll receive a confirmation email shortly.",
-    })
+      description:
+        "Your appointment has been successfully booked. You'll receive a confirmation email shortly.",
+    });
 
     // Reset booking flow
     setTimeout(() => {
-      setCurrentStep("service")
+      setCurrentStep("service");
       setBookingDetails({
         service: null,
         provider: null,
@@ -241,22 +270,34 @@ export default function BookingFlowPage() {
           phone: "",
           notes: "",
         },
-      })
-    }, 3000)
-  }
+      });
+    }, 3000);
+  };
 
   const goBack = () => {
-    const steps: BookingStep[] = ["service", "provider", "datetime", "details", "confirmation"]
-    const currentIndex = steps.indexOf(currentStep)
+    const steps: BookingStep[] = [
+      "service",
+      "provider",
+      "datetime",
+      "details",
+      "confirmation",
+    ];
+    const currentIndex = steps.indexOf(currentStep);
     if (currentIndex > 0) {
-      setCurrentStep(steps[currentIndex - 1])
+      setCurrentStep(steps[currentIndex - 1]);
     }
-  }
+  };
 
   const getStepNumber = (step: BookingStep) => {
-    const steps: BookingStep[] = ["service", "provider", "datetime", "details", "confirmation"]
-    return steps.indexOf(step) + 1
-  }
+    const steps: BookingStep[] = [
+      "service",
+      "provider",
+      "datetime",
+      "details",
+      "confirmation",
+    ];
+    return steps.indexOf(step) + 1;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -266,7 +307,7 @@ export default function BookingFlowPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub</span>
+              <span className="text-2xl font-bold">Reservo</span>
             </div>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="icon">
@@ -297,24 +338,36 @@ export default function BookingFlowPage() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {["service", "provider", "datetime", "details", "confirmation"].map((step, index) => (
-              <div key={step} className="flex items-center">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    getStepNumber(currentStep) > index + 1
-                      ? "bg-primary text-primary-foreground"
-                      : getStepNumber(currentStep) === index + 1
+            {["service", "provider", "datetime", "details", "confirmation"].map(
+              (step, index) => (
+                <div key={step} className="flex items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      getStepNumber(currentStep) > index + 1
+                        ? "bg-primary text-primary-foreground"
+                        : getStepNumber(currentStep) === index + 1
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {getStepNumber(currentStep) > index + 1 ? <Check className="h-4 w-4" /> : index + 1}
+                    }`}
+                  >
+                    {getStepNumber(currentStep) > index + 1 ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      index + 1
+                    )}
+                  </div>
+                  {index < 4 && (
+                    <div
+                      className={`w-12 h-0.5 ${
+                        getStepNumber(currentStep) > index + 1
+                          ? "bg-primary"
+                          : "bg-muted"
+                      }`}
+                    />
+                  )}
                 </div>
-                {index < 4 && (
-                  <div className={`w-12 h-0.5 ${getStepNumber(currentStep) > index + 1 ? "bg-primary" : "bg-muted"}`} />
-                )}
-              </div>
-            ))}
+              )
+            )}
           </div>
 
           <div className="flex justify-between mt-2 text-sm text-muted-foreground">
@@ -327,7 +380,12 @@ export default function BookingFlowPage() {
         </div>
 
         {/* Step Content */}
-        {currentStep === "service" && <ServiceSelectionStep services={services} onSelect={handleServiceSelect} />}
+        {currentStep === "service" && (
+          <ServiceSelectionStep
+            services={services}
+            onSelect={handleServiceSelect}
+          />
+        )}
 
         {currentStep === "provider" && bookingDetails.service && (
           <ProviderSelectionStep
@@ -337,24 +395,32 @@ export default function BookingFlowPage() {
           />
         )}
 
-        {currentStep === "datetime" && bookingDetails.service && bookingDetails.provider && (
-          <DateTimeSelectionStep
-            service={bookingDetails.service}
-            provider={bookingDetails.provider}
-            onSelect={handleDateTimeSelect}
+        {currentStep === "datetime" &&
+          bookingDetails.service &&
+          bookingDetails.provider && (
+            <DateTimeSelectionStep
+              service={bookingDetails.service}
+              provider={bookingDetails.provider}
+              onSelect={handleDateTimeSelect}
+            />
+          )}
+
+        {currentStep === "details" && (
+          <ClientDetailsStep
+            bookingDetails={bookingDetails}
+            onSubmit={handleClientDetailsSubmit}
           />
         )}
 
-        {currentStep === "details" && (
-          <ClientDetailsStep bookingDetails={bookingDetails} onSubmit={handleClientDetailsSubmit} />
-        )}
-
         {currentStep === "confirmation" && (
-          <BookingConfirmationStep bookingDetails={bookingDetails} onConfirm={handleBookingSubmit} />
+          <BookingConfirmationStep
+            bookingDetails={bookingDetails}
+            onConfirm={handleBookingSubmit}
+          />
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // Service Selection Step
@@ -362,14 +428,16 @@ function ServiceSelectionStep({
   services,
   onSelect,
 }: {
-  services: Service[]
-  onSelect: (service: Service) => void
+  services: Service[];
+  onSelect: (service: Service) => void;
 }) {
   return (
     <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Choose a Service</h2>
-        <p className="text-muted-foreground">Select the service you'd like to book</p>
+        <p className="text-muted-foreground">
+          Select the service you'd like to book
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -381,17 +449,23 @@ function ServiceSelectionStep({
           >
             <div className="aspect-video relative">
               <img
-                src={service.images[0] || "/placeholder.svg?height=200&width=300"}
+                src={
+                  service.images[0] || "/placeholder.svg?height=200&width=300"
+                }
                 alt={service.name}
                 className="w-full h-full object-cover rounded-t-lg"
               />
-              <Badge className="absolute top-2 left-2">{service.category}</Badge>
+              <Badge className="absolute top-2 left-2">
+                {service.category}
+              </Badge>
             </div>
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <CardTitle className="text-lg">{service.name}</CardTitle>
-                  <CardDescription className="mt-2">{service.description}</CardDescription>
+                  <CardDescription className="mt-2">
+                    {service.description}
+                  </CardDescription>
                 </div>
               </div>
             </CardHeader>
@@ -404,7 +478,9 @@ function ServiceSelectionStep({
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-bold text-primary text-xl">${service.price}</div>
+                  <div className="font-bold text-primary text-xl">
+                    ${service.price}
+                  </div>
                 </div>
               </div>
               <Button className="w-full mt-4">
@@ -416,7 +492,7 @@ function ServiceSelectionStep({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // Provider Selection Step
@@ -425,16 +501,17 @@ function ProviderSelectionStep({
   providers,
   onSelect,
 }: {
-  service: Service
-  providers: Provider[]
-  onSelect: (provider: Provider) => void
+  service: Service;
+  providers: Provider[];
+  onSelect: (provider: Provider) => void;
 }) {
   return (
     <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Choose a Provider</h2>
         <p className="text-muted-foreground">
-          Select a provider for <span className="font-medium">{service.name}</span>
+          Select a provider for{" "}
+          <span className="font-medium">{service.name}</span>
         </p>
       </div>
 
@@ -459,7 +536,9 @@ function ProviderSelectionStep({
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
                     <h3 className="font-semibold text-lg">{provider.name}</h3>
-                    {provider.verified && <Badge variant="outline">Verified</Badge>}
+                    {provider.verified && (
+                      <Badge variant="outline">Verified</Badge>
+                    )}
                   </div>
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
                     <div className="flex items-center space-x-1">
@@ -483,7 +562,7 @@ function ProviderSelectionStep({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // Date & Time Selection Step
@@ -492,23 +571,23 @@ function DateTimeSelectionStep({
   provider,
   onSelect,
 }: {
-  service: Service
-  provider: Provider
-  onSelect: (date: string, time: string) => void
+  service: Service;
+  provider: Provider;
+  onSelect: (date: string, time: string) => void;
 }) {
-  const [selectedDate, setSelectedDate] = useState("")
-  const [selectedTime, setSelectedTime] = useState("")
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
 
   // Generate available dates (next 30 days)
   const getAvailableDates = () => {
-    const dates = []
-    const today = new Date()
+    const dates = [];
+    const today = new Date();
 
     for (let i = 1; i <= 30; i++) {
-      const date = new Date(today)
-      date.setDate(today.getDate() + i)
-      const dayName = date.toLocaleDateString("en-US", { weekday: "long" })
-      const workingHours = provider.workingHours[dayName]
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+      const workingHours = provider.workingHours[dayName];
 
       if (workingHours?.enabled) {
         dates.push({
@@ -519,44 +598,48 @@ function DateTimeSelectionStep({
             day: "numeric",
           }),
           dayName,
-        })
+        });
       }
     }
 
-    return dates
-  }
+    return dates;
+  };
 
   // Generate available time slots for selected date
   const getAvailableTimeSlots = (date: string) => {
-    if (!date) return []
+    if (!date) return [];
 
-    const selectedDateObj = new Date(date)
-    const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" })
-    const workingHours = provider.workingHours[dayName]
+    const selectedDateObj = new Date(date);
+    const dayName = selectedDateObj.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const workingHours = provider.workingHours[dayName];
 
-    if (!workingHours?.enabled) return []
+    if (!workingHours?.enabled) return [];
 
-    const slots = []
-    const startTime = new Date(`${date}T${workingHours.startTime}:00`)
-    const endTime = new Date(`${date}T${workingHours.endTime}:00`)
+    const slots = [];
+    const startTime = new Date(`${date}T${workingHours.startTime}:00`);
+    const endTime = new Date(`${date}T${workingHours.endTime}:00`);
 
     // Generate slots based on service duration + buffer time
-    const slotDuration = service.duration + provider.bufferTime
+    const slotDuration = service.duration + provider.bufferTime;
 
-    let currentTime = new Date(startTime)
+    let currentTime = new Date(startTime);
     while (currentTime < endTime) {
-      const slotEndTime = new Date(currentTime.getTime() + service.duration * 60000)
+      const slotEndTime = new Date(
+        currentTime.getTime() + service.duration * 60000
+      );
 
       if (slotEndTime <= endTime) {
-        const timeString = currentTime.toTimeString().slice(0, 5)
+        const timeString = currentTime.toTimeString().slice(0, 5);
 
         // Check if slot conflicts with blocked times
         const isBlocked = provider.blockedTimes.some((blocked) => {
-          if (blocked.date !== date) return false
-          const blockedStart = blocked.startTime
-          const blockedEnd = blocked.endTime
-          return timeString >= blockedStart && timeString < blockedEnd
-        })
+          if (blocked.date !== date) return false;
+          const blockedStart = blocked.startTime;
+          const blockedEnd = blocked.endTime;
+          return timeString >= blockedStart && timeString < blockedEnd;
+        });
 
         if (!isBlocked) {
           slots.push({
@@ -566,31 +649,32 @@ function DateTimeSelectionStep({
               minute: "2-digit",
               hour12: true,
             }),
-          })
+          });
         }
       }
 
-      currentTime = new Date(currentTime.getTime() + slotDuration * 60000)
+      currentTime = new Date(currentTime.getTime() + slotDuration * 60000);
     }
 
-    return slots
-  }
+    return slots;
+  };
 
-  const availableDates = getAvailableDates()
-  const availableTimeSlots = getAvailableTimeSlots(selectedDate)
+  const availableDates = getAvailableDates();
+  const availableTimeSlots = getAvailableTimeSlots(selectedDate);
 
   const handleContinue = () => {
     if (selectedDate && selectedTime) {
-      onSelect(selectedDate, selectedTime)
+      onSelect(selectedDate, selectedTime);
     }
-  }
+  };
 
   return (
     <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Select Date & Time</h2>
         <p className="text-muted-foreground">
-          Choose your preferred appointment time with <span className="font-medium">{provider.name}</span>
+          Choose your preferred appointment time with{" "}
+          <span className="font-medium">{provider.name}</span>
         </p>
       </div>
 
@@ -599,21 +683,27 @@ function DateTimeSelectionStep({
         <Card>
           <CardHeader>
             <CardTitle>Select Date</CardTitle>
-            <CardDescription>Choose an available date for your appointment</CardDescription>
+            <CardDescription>
+              Choose an available date for your appointment
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-2 max-h-96 overflow-y-auto">
               {availableDates.map((dateOption) => (
                 <Button
                   key={dateOption.date}
-                  variant={selectedDate === dateOption.date ? "default" : "outline"}
+                  variant={
+                    selectedDate === dateOption.date ? "default" : "outline"
+                  }
                   className="h-auto p-3 flex flex-col items-center"
                   onClick={() => {
-                    setSelectedDate(dateOption.date)
-                    setSelectedTime("") // Reset time when date changes
+                    setSelectedDate(dateOption.date);
+                    setSelectedTime(""); // Reset time when date changes
                   }}
                 >
-                  <span className="text-xs text-muted-foreground">{dateOption.dayName}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {dateOption.dayName}
+                  </span>
                   <span className="font-medium">{dateOption.display}</span>
                 </Button>
               ))}
@@ -626,7 +716,9 @@ function DateTimeSelectionStep({
           <CardHeader>
             <CardTitle>Select Time</CardTitle>
             <CardDescription>
-              {selectedDate ? "Choose your preferred time slot" : "Please select a date first"}
+              {selectedDate
+                ? "Choose your preferred time slot"
+                : "Please select a date first"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -636,7 +728,9 @@ function DateTimeSelectionStep({
                   availableTimeSlots.map((timeSlot) => (
                     <Button
                       key={timeSlot.time}
-                      variant={selectedTime === timeSlot.time ? "default" : "outline"}
+                      variant={
+                        selectedTime === timeSlot.time ? "default" : "outline"
+                      }
                       className="h-auto p-3"
                       onClick={() => setSelectedTime(timeSlot.time)}
                     >
@@ -676,7 +770,9 @@ function DateTimeSelectionStep({
                     day: "numeric",
                   })}{" "}
                   at{" "}
-                  {new Date(`${selectedDate}T${selectedTime}`).toLocaleTimeString("en-US", {
+                  {new Date(
+                    `${selectedDate}T${selectedTime}`
+                  ).toLocaleTimeString("en-US", {
                     hour: "numeric",
                     minute: "2-digit",
                     hour12: true,
@@ -692,7 +788,7 @@ function DateTimeSelectionStep({
         </Card>
       )}
     </div>
-  )
+  );
 }
 
 // Client Details Step
@@ -700,21 +796,23 @@ function ClientDetailsStep({
   bookingDetails,
   onSubmit,
 }: {
-  bookingDetails: BookingDetails
-  onSubmit: (clientInfo: BookingDetails["clientInfo"]) => void
+  bookingDetails: BookingDetails;
+  onSubmit: (clientInfo: BookingDetails["clientInfo"]) => void;
 }) {
-  const [formData, setFormData] = useState(bookingDetails.clientInfo)
+  const [formData, setFormData] = useState(bookingDetails.clientInfo);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSubmit(formData)
-  }
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
   return (
     <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Your Details</h2>
-        <p className="text-muted-foreground">Please provide your contact information</p>
+        <p className="text-muted-foreground">
+          Please provide your contact information
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -723,7 +821,9 @@ function ClientDetailsStep({
           <Card>
             <CardHeader>
               <CardTitle>Contact Information</CardTitle>
-              <CardDescription>We'll use this information to confirm your booking</CardDescription>
+              <CardDescription>
+                We'll use this information to confirm your booking
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -733,7 +833,9 @@ function ClientDetailsStep({
                     <Input
                       id="firstName"
                       value={formData.firstName}
-                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, firstName: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -742,7 +844,9 @@ function ClientDetailsStep({
                     <Input
                       id="lastName"
                       value={formData.lastName}
-                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, lastName: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -754,7 +858,9 @@ function ClientDetailsStep({
                     id="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -765,7 +871,9 @@ function ClientDetailsStep({
                     id="phone"
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -775,7 +883,9 @@ function ClientDetailsStep({
                   <Textarea
                     id="notes"
                     value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, notes: e.target.value })
+                    }
                     placeholder="Any special requests or information for the provider..."
                     className="min-h-[100px]"
                   />
@@ -798,13 +908,19 @@ function ClientDetailsStep({
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-semibold">{bookingDetails.service?.name}</h4>
-                <p className="text-sm text-muted-foreground">{bookingDetails.service?.duration} minutes</p>
+                <h4 className="font-semibold">
+                  {bookingDetails.service?.name}
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  {bookingDetails.service?.duration} minutes
+                </p>
               </div>
 
               <div className="flex items-center space-x-3">
                 <Avatar>
-                  <AvatarImage src={bookingDetails.provider?.avatar || "/placeholder.svg"} />
+                  <AvatarImage
+                    src={bookingDetails.provider?.avatar || "/placeholder.svg"}
+                  />
                   <AvatarFallback>
                     {bookingDetails.provider?.name
                       .split(" ")
@@ -814,7 +930,9 @@ function ClientDetailsStep({
                 </Avatar>
                 <div>
                   <p className="font-medium">{bookingDetails.provider?.name}</p>
-                  <p className="text-sm text-muted-foreground">{bookingDetails.provider?.location}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {bookingDetails.provider?.location}
+                  </p>
                 </div>
               </div>
 
@@ -823,19 +941,24 @@ function ClientDetailsStep({
                   <CalendarIcon className="h-4 w-4" />
                   <span>
                     {bookingDetails.date &&
-                      new Date(bookingDetails.date).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      new Date(bookingDetails.date).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm mt-1">
                   <Clock className="h-4 w-4" />
                   <span>
                     {bookingDetails.time &&
-                      new Date(`${bookingDetails.date}T${bookingDetails.time}`).toLocaleTimeString("en-US", {
+                      new Date(
+                        `${bookingDetails.date}T${bookingDetails.time}`
+                      ).toLocaleTimeString("en-US", {
                         hour: "numeric",
                         minute: "2-digit",
                         hour12: true,
@@ -847,7 +970,9 @@ function ClientDetailsStep({
               <div className="border-t pt-4">
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">Total</span>
-                  <span className="font-bold text-lg">${bookingDetails.service?.price}</span>
+                  <span className="font-bold text-lg">
+                    ${bookingDetails.service?.price}
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -855,7 +980,7 @@ function ClientDetailsStep({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Booking Confirmation Step
@@ -863,14 +988,16 @@ function BookingConfirmationStep({
   bookingDetails,
   onConfirm,
 }: {
-  bookingDetails: BookingDetails
-  onConfirm: () => void
+  bookingDetails: BookingDetails;
+  onConfirm: () => void;
 }) {
   return (
     <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Confirm Your Booking</h2>
-        <p className="text-muted-foreground">Please review your appointment details before confirming</p>
+        <p className="text-muted-foreground">
+          Please review your appointment details before confirming
+        </p>
       </div>
 
       <div className="max-w-2xl mx-auto">
@@ -888,11 +1015,17 @@ function BookingConfirmationStep({
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-medium">{bookingDetails.service?.name}</p>
-                  <p className="text-sm text-muted-foreground">Duration: {bookingDetails.service?.duration} minutes</p>
-                  <Badge className="mt-1">{bookingDetails.service?.category}</Badge>
+                  <p className="text-sm text-muted-foreground">
+                    Duration: {bookingDetails.service?.duration} minutes
+                  </p>
+                  <Badge className="mt-1">
+                    {bookingDetails.service?.category}
+                  </Badge>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg">${bookingDetails.service?.price}</p>
+                  <p className="font-bold text-lg">
+                    ${bookingDetails.service?.price}
+                  </p>
                 </div>
               </div>
             </div>
@@ -902,7 +1035,9 @@ function BookingConfirmationStep({
               <h3 className="font-semibold mb-2">Provider</h3>
               <div className="flex items-center space-x-3">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={bookingDetails.provider?.avatar || "/placeholder.svg"} />
+                  <AvatarImage
+                    src={bookingDetails.provider?.avatar || "/placeholder.svg"}
+                  />
                   <AvatarFallback>
                     {bookingDetails.provider?.name
                       .split(" ")
@@ -933,19 +1068,24 @@ function BookingConfirmationStep({
                   <CalendarIcon className="h-4 w-4 text-muted-foreground" />
                   <span>
                     {bookingDetails.date &&
-                      new Date(bookingDetails.date).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      new Date(bookingDetails.date).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <span>
                     {bookingDetails.time &&
-                      new Date(`${bookingDetails.date}T${bookingDetails.time}`).toLocaleTimeString("en-US", {
+                      new Date(
+                        `${bookingDetails.date}T${bookingDetails.time}`
+                      ).toLocaleTimeString("en-US", {
                         hour: "numeric",
                         minute: "2-digit",
                         hour12: true,
@@ -962,7 +1102,8 @@ function BookingConfirmationStep({
                 <div className="flex items-center space-x-2">
                   <User className="h-4 w-4 text-muted-foreground" />
                   <span>
-                    {bookingDetails.clientInfo.firstName} {bookingDetails.clientInfo.lastName}
+                    {bookingDetails.clientInfo.firstName}{" "}
+                    {bookingDetails.clientInfo.lastName}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -976,7 +1117,9 @@ function BookingConfirmationStep({
                 {bookingDetails.clientInfo.notes && (
                   <div className="mt-2">
                     <p className="text-sm font-medium">Notes:</p>
-                    <p className="text-sm text-muted-foreground">{bookingDetails.clientInfo.notes}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {bookingDetails.clientInfo.notes}
+                    </p>
                   </div>
                 )}
               </div>
@@ -986,7 +1129,9 @@ function BookingConfirmationStep({
             <div className="border-t pt-4">
               <div className="flex justify-between items-center text-lg">
                 <span className="font-semibold">Total Amount</span>
-                <span className="font-bold text-primary">${bookingDetails.service?.price}</span>
+                <span className="font-bold text-primary">
+                  ${bookingDetails.service?.price}
+                </span>
               </div>
             </div>
 
@@ -997,11 +1142,12 @@ function BookingConfirmationStep({
             </Button>
 
             <p className="text-xs text-muted-foreground text-center">
-              By confirming this booking, you agree to our terms of service and cancellation policy.
+              By confirming this booking, you agree to our terms of service and
+              cancellation policy.
             </p>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

@@ -1,16 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { ModeToggle } from "@/components/mode-toggle"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +41,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Calendar,
   Users,
@@ -48,14 +60,14 @@ import {
   CheckCircle,
   XCircle,
   Star,
-} from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [selectedUser, setSelectedUser] = useState(null)
-  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false)
-  const { toast } = useToast()
+  const [activeTab, setActiveTab] = useState("overview");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const stats = [
     {
@@ -86,7 +98,7 @@ export default function AdminDashboard() {
       icon: Star,
       color: "text-yellow-600",
     },
-  ]
+  ];
 
   const users = [
     {
@@ -149,7 +161,7 @@ export default function AdminDashboard() {
       location: "Miami, FL",
       services: ["Beauty", "Wellness"],
     },
-  ]
+  ];
 
   const bookings = [
     {
@@ -185,7 +197,7 @@ export default function AdminDashboard() {
       amount: "$65",
       commission: "$0",
     },
-  ]
+  ];
 
   const reports = [
     {
@@ -208,22 +220,22 @@ export default function AdminDashboard() {
       status: "resolved",
       priority: "high",
     },
-  ]
+  ];
 
   const handleUserAction = (action: string, userId: number) => {
-    const user = users.find((u) => u.id === userId)
+    const user = users.find((u) => u.id === userId);
     toast({
       title: `User ${action}`,
       description: `${user?.name} has been ${action.toLowerCase()}.`,
-    })
-  }
+    });
+  };
 
   const handleReportAction = (action: string, reportId: number) => {
     toast({
       title: `Report ${action}`,
       description: `Report #${reportId} has been ${action.toLowerCase()}.`,
-    })
-  }
+    });
+  };
 
   const getStatusBadge = (status: string) => {
     const variants = {
@@ -234,18 +246,20 @@ export default function AdminDashboard() {
       confirmed: "secondary",
       cancelled: "destructive",
       resolved: "default",
-    }
-    return <Badge variant={variants[status] || "secondary"}>{status}</Badge>
-  }
+    };
+    return <Badge variant={variants[status] || "secondary"}>{status}</Badge>;
+  };
 
   const getPriorityBadge = (priority: string) => {
     const variants = {
       high: "destructive",
       medium: "secondary",
       low: "outline",
-    }
-    return <Badge variant={variants[priority] || "secondary"}>{priority}</Badge>
-  }
+    };
+    return (
+      <Badge variant={variants[priority] || "secondary"}>{priority}</Badge>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -255,7 +269,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">BookingHub Admin</span>
+              <span className="text-2xl font-bold">Reservo Admin</span>
             </div>
             <div className="flex items-center space-x-4">
               <ModeToggle />
@@ -277,7 +291,9 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Manage users, bookings, and platform operations</p>
+          <p className="text-muted-foreground">
+            Manage users, bookings, and platform operations
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -287,9 +303,13 @@ export default function AdminDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </p>
                     <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-green-600">{stat.change} from last month</p>
+                    <p className="text-xs text-green-600">
+                      {stat.change} from last month
+                    </p>
                   </div>
                   <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
                     <stat.icon className={`h-6 w-6 ${stat.color}`} />
@@ -322,26 +342,40 @@ export default function AdminDashboard() {
                   <div className="flex items-center space-x-4">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium">New provider registered</p>
-                      <p className="text-xs text-muted-foreground">Mike Chen joined as fitness trainer</p>
+                      <p className="text-sm font-medium">
+                        New provider registered
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Mike Chen joined as fitness trainer
+                      </p>
                     </div>
-                    <span className="text-xs text-muted-foreground">2 min ago</span>
+                    <span className="text-xs text-muted-foreground">
+                      2 min ago
+                    </span>
                   </div>
                   <div className="flex items-center space-x-4">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">Booking completed</p>
-                      <p className="text-xs text-muted-foreground">Photography session by Sarah Johnson</p>
+                      <p className="text-xs text-muted-foreground">
+                        Photography session by Sarah Johnson
+                      </p>
                     </div>
-                    <span className="text-xs text-muted-foreground">15 min ago</span>
+                    <span className="text-xs text-muted-foreground">
+                      15 min ago
+                    </span>
                   </div>
                   <div className="flex items-center space-x-4">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">Report submitted</p>
-                      <p className="text-xs text-muted-foreground">Payment dispute reported</p>
+                      <p className="text-xs text-muted-foreground">
+                        Payment dispute reported
+                      </p>
                     </div>
-                    <span className="text-xs text-muted-foreground">1 hour ago</span>
+                    <span className="text-xs text-muted-foreground">
+                      1 hour ago
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -357,15 +391,24 @@ export default function AdminDashboard() {
                     <UserCheck className="h-4 w-4 mr-2" />
                     Approve Pending Providers
                   </Button>
-                  <Button variant="outline" className="w-full justify-start bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
                     <AlertTriangle className="h-4 w-4 mr-2" />
                     Review Reports
                   </Button>
-                  <Button variant="outline" className="w-full justify-start bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
                     <BarChart3 className="h-4 w-4 mr-2" />
                     Generate Analytics Report
                   </Button>
-                  <Button variant="outline" className="w-full justify-start bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
                     <FileText className="h-4 w-4 mr-2" />
                     Export User Data
                   </Button>
@@ -379,12 +422,17 @@ export default function AdminDashboard() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>User Management</CardTitle>
-                  <CardDescription>Manage clients and service providers</CardDescription>
+                  <CardDescription>
+                    Manage clients and service providers
+                  </CardDescription>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input placeholder="Search users..." className="pl-10 w-64" />
+                    <Input
+                      placeholder="Search users..."
+                      className="pl-10 w-64"
+                    />
                   </div>
                   <Select>
                     <SelectTrigger className="w-32">
@@ -409,7 +457,9 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-4">
                             <Avatar>
-                              <AvatarImage src={user.avatar || "/placeholder.svg"} />
+                              <AvatarImage
+                                src={user.avatar || "/placeholder.svg"}
+                              />
                               <AvatarFallback>
                                 {user.name
                                   .split(" ")
@@ -420,11 +470,23 @@ export default function AdminDashboard() {
                             <div className="flex-1">
                               <div className="flex items-center space-x-2">
                                 <h3 className="font-semibold">{user.name}</h3>
-                                {user.verified && <CheckCircle className="h-4 w-4 text-green-500" />}
-                                <Badge variant={user.role === "provider" ? "default" : "secondary"}>{user.role}</Badge>
+                                {user.verified && (
+                                  <CheckCircle className="h-4 w-4 text-green-500" />
+                                )}
+                                <Badge
+                                  variant={
+                                    user.role === "provider"
+                                      ? "default"
+                                      : "secondary"
+                                  }
+                                >
+                                  {user.role}
+                                </Badge>
                                 {getStatusBadge(user.status)}
                               </div>
-                              <p className="text-sm text-muted-foreground">{user.email}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {user.email}
+                              </p>
                               <div className="flex items-center space-x-4 mt-1 text-xs text-muted-foreground">
                                 <span>Joined: {user.joinDate}</span>
                                 <span>Bookings: {user.totalBookings}</span>
@@ -445,7 +507,11 @@ export default function AdminDashboard() {
                               {user.services && (
                                 <div className="flex items-center space-x-1 mt-1">
                                   {user.services.map((service, index) => (
-                                    <Badge key={index} variant="outline" className="text-xs">
+                                    <Badge
+                                      key={index}
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
                                       {service}
                                     </Badge>
                                   ))}
@@ -462,8 +528,12 @@ export default function AdminDashboard() {
                               </DialogTrigger>
                               <DialogContent className="max-w-2xl">
                                 <DialogHeader>
-                                  <DialogTitle>User Details: {user.name}</DialogTitle>
-                                  <DialogDescription>Complete user information and activity</DialogDescription>
+                                  <DialogTitle>
+                                    User Details: {user.name}
+                                  </DialogTitle>
+                                  <DialogDescription>
+                                    Complete user information and activity
+                                  </DialogDescription>
                                 </DialogHeader>
                                 <div className="grid grid-cols-2 gap-4">
                                   <div>
@@ -476,11 +546,15 @@ export default function AdminDashboard() {
                                   </div>
                                   <div>
                                     <Label>Role</Label>
-                                    <p className="text-sm capitalize">{user.role}</p>
+                                    <p className="text-sm capitalize">
+                                      {user.role}
+                                    </p>
                                   </div>
                                   <div>
                                     <Label>Status</Label>
-                                    <p className="text-sm capitalize">{user.status}</p>
+                                    <p className="text-sm capitalize">
+                                      {user.status}
+                                    </p>
                                   </div>
                                   <div>
                                     <Label>Location</Label>
@@ -492,11 +566,21 @@ export default function AdminDashboard() {
                                   </div>
                                   <div>
                                     <Label>Total Bookings</Label>
-                                    <p className="text-sm">{user.totalBookings}</p>
+                                    <p className="text-sm">
+                                      {user.totalBookings}
+                                    </p>
                                   </div>
                                   <div>
-                                    <Label>{user.role === "provider" ? "Revenue" : "Spent"}</Label>
-                                    <p className="text-sm">{user.role === "provider" ? user.revenue : user.spent}</p>
+                                    <Label>
+                                      {user.role === "provider"
+                                        ? "Revenue"
+                                        : "Spent"}
+                                    </Label>
+                                    <p className="text-sm">
+                                      {user.role === "provider"
+                                        ? user.revenue
+                                        : user.spent}
+                                    </p>
                                   </div>
                                 </div>
                               </DialogContent>
@@ -505,7 +589,12 @@ export default function AdminDashboard() {
                               <Edit className="h-4 w-4" />
                             </Button>
                             {user.status === "pending" && (
-                              <Button size="sm" onClick={() => handleUserAction("Approved", user.id)}>
+                              <Button
+                                size="sm"
+                                onClick={() =>
+                                  handleUserAction("Approved", user.id)
+                                }
+                              >
                                 <UserCheck className="h-4 w-4" />
                               </Button>
                             )}
@@ -518,15 +607,24 @@ export default function AdminDashboard() {
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle>Suspend User</AlertDialogTitle>
+                                    <AlertDialogTitle>
+                                      Suspend User
+                                    </AlertDialogTitle>
                                     <AlertDialogDescription>
-                                      Are you sure you want to suspend {user.name}? This will prevent them from using
-                                      the platform.
+                                      Are you sure you want to suspend{" "}
+                                      {user.name}? This will prevent them from
+                                      using the platform.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => handleUserAction("Suspended", user.id)}>
+                                    <AlertDialogCancel>
+                                      Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() =>
+                                        handleUserAction("Suspended", user.id)
+                                      }
+                                    >
                                       Suspend
                                     </AlertDialogAction>
                                   </AlertDialogFooter>
@@ -547,7 +645,9 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Booking Management</CardTitle>
-                <CardDescription>Monitor and manage all platform bookings</CardDescription>
+                <CardDescription>
+                  Monitor and manage all platform bookings
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -557,25 +657,33 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h3 className="font-semibold">{booking.service}</h3>
+                              <h3 className="font-semibold">
+                                {booking.service}
+                              </h3>
                               {getStatusBadge(booking.status)}
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground">
                               <div>
-                                <span className="font-medium">Client:</span> {booking.client}
+                                <span className="font-medium">Client:</span>{" "}
+                                {booking.client}
                               </div>
                               <div>
-                                <span className="font-medium">Provider:</span> {booking.provider}
+                                <span className="font-medium">Provider:</span>{" "}
+                                {booking.provider}
                               </div>
                               <div>
-                                <span className="font-medium">Date:</span> {booking.date} at {booking.time}
+                                <span className="font-medium">Date:</span>{" "}
+                                {booking.date} at {booking.time}
                               </div>
                               <div>
-                                <span className="font-medium">Amount:</span> {booking.amount}
+                                <span className="font-medium">Amount:</span>{" "}
+                                {booking.amount}
                               </div>
                             </div>
                             <div className="mt-2 text-sm">
-                              <span className="font-medium text-green-600">Commission: {booking.commission}</span>
+                              <span className="font-medium text-green-600">
+                                Commission: {booking.commission}
+                              </span>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -599,7 +707,9 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Reports & Issues</CardTitle>
-                <CardDescription>Handle user reports and platform issues</CardDescription>
+                <CardDescription>
+                  Handle user reports and platform issues
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -609,34 +719,48 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
-                              <h3 className="font-semibold capitalize">{report.type.replace("_", " ")}</h3>
+                              <h3 className="font-semibold capitalize">
+                                {report.type.replace("_", " ")}
+                              </h3>
                               {getStatusBadge(report.status)}
                               {getPriorityBadge(report.priority)}
                             </div>
-                            <p className="text-sm text-muted-foreground mb-2">{report.reason}</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {report.reason}
+                            </p>
                             <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
                               <div>
-                                <span className="font-medium">Reporter:</span> {report.reporter}
+                                <span className="font-medium">Reporter:</span>{" "}
+                                {report.reporter}
                               </div>
                               <div>
-                                <span className="font-medium">Reported:</span> {report.reported}
+                                <span className="font-medium">Reported:</span>{" "}
+                                {report.reported}
                               </div>
                               <div>
-                                <span className="font-medium">Date:</span> {report.date}
+                                <span className="font-medium">Date:</span>{" "}
+                                {report.date}
                               </div>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
                             {report.status === "pending" && (
                               <>
-                                <Button size="sm" onClick={() => handleReportAction("Resolved", report.id)}>
+                                <Button
+                                  size="sm"
+                                  onClick={() =>
+                                    handleReportAction("Resolved", report.id)
+                                  }
+                                >
                                   <CheckCircle className="h-4 w-4 mr-1" />
                                   Resolve
                                 </Button>
                                 <Button
                                   variant="destructive"
                                   size="sm"
-                                  onClick={() => handleReportAction("Dismissed", report.id)}
+                                  onClick={() =>
+                                    handleReportAction("Dismissed", report.id)
+                                  }
                                 >
                                   <XCircle className="h-4 w-4 mr-1" />
                                   Dismiss
@@ -661,27 +785,35 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Platform Settings</CardTitle>
-                  <CardDescription>Configure platform-wide settings</CardDescription>
+                  <CardDescription>
+                    Configure platform-wide settings
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <Label>Auto-approve providers</Label>
-                      <p className="text-sm text-muted-foreground">Automatically approve new provider registrations</p>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically approve new provider registrations
+                      </p>
                     </div>
                     <Switch />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <Label>Email notifications</Label>
-                      <p className="text-sm text-muted-foreground">Send email notifications for bookings</p>
+                      <p className="text-sm text-muted-foreground">
+                        Send email notifications for bookings
+                      </p>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <Label>Maintenance mode</Label>
-                      <p className="text-sm text-muted-foreground">Put the platform in maintenance mode</p>
+                      <p className="text-sm text-muted-foreground">
+                        Put the platform in maintenance mode
+                      </p>
                     </div>
                     <Switch />
                   </div>
@@ -691,20 +823,34 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Commission Settings</CardTitle>
-                  <CardDescription>Configure platform commission rates</CardDescription>
+                  <CardDescription>
+                    Configure platform commission rates
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="commission-rate">Commission Rate (%)</Label>
-                    <Input id="commission-rate" type="number" defaultValue="10" />
+                    <Input
+                      id="commission-rate"
+                      type="number"
+                      defaultValue="10"
+                    />
                   </div>
                   <div>
-                    <Label htmlFor="min-commission">Minimum Commission ($)</Label>
+                    <Label htmlFor="min-commission">
+                      Minimum Commission ($)
+                    </Label>
                     <Input id="min-commission" type="number" defaultValue="5" />
                   </div>
                   <div>
-                    <Label htmlFor="max-commission">Maximum Commission ($)</Label>
-                    <Input id="max-commission" type="number" defaultValue="100" />
+                    <Label htmlFor="max-commission">
+                      Maximum Commission ($)
+                    </Label>
+                    <Input
+                      id="max-commission"
+                      type="number"
+                      defaultValue="100"
+                    />
                   </div>
                   <Button>Save Changes</Button>
                 </CardContent>
@@ -714,5 +860,5 @@ export default function AdminDashboard() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
