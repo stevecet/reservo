@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser({
         id: "1",
         name: role === "admin" ? "Admin User" : "Demo User",
-        email: role === "admin" ? "admin@Reservo.com" : "user@example.com",
+        email: role === "admin" ? "admin@reservo.com" : "user@example.com",
         role,
         verified: true,
       });
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Simulate authentication
     if (
       role === "admin" &&
-      email === "admin@Reservo.com" &&
+      email === "admin@reservo.com" &&
       password === "admin123"
     ) {
       const adminUser: User = {

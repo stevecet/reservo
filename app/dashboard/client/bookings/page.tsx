@@ -47,6 +47,7 @@ import {
   CalendarDays,
   DollarSign,
   Edit,
+  House,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -57,6 +58,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ClientBooking {
   id: number;
@@ -83,6 +85,7 @@ interface ClientBooking {
 }
 
 export default function ClientBookingsPage() {
+  const router = useRouter();
   const [bookings, setBookings] = useState<ClientBooking[]>([
     {
       id: 1,
@@ -330,42 +333,13 @@ export default function ClientBookingsPage() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">Reservo</span>
-            </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <Link
-                href="/"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Home
-              </Link>
-              <Link
-                href="/services"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Browse Services
-              </Link>
-              <Link
-                href="/dashboard/client"
-                className="text-foreground font-medium"
-              >
-                Dashboard
-              </Link>
-            </nav>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-              <Avatar>
-                <AvatarImage src="/placeholder.svg?height=32&width=32" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-            </div>
+            <Button
+              className="flex items-center space-x-2"
+              onClick={() => router.push("/dashboard/client")}
+            >
+              <House className="text-primary text-black" />
+              <span className="text-md">Back home</span>
+            </Button>
           </div>
         </div>
       </header>

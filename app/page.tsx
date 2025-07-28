@@ -149,28 +149,10 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">Reservo</span>
+              <Link href="/">
+                <span className="text-2xl font-bold cursor-pointer">Reservo</span>
+              </Link>
             </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <Link
-                href="/services"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Browse Services
-              </Link>
-              <Link
-                href="/how-it-works"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                How It Works
-              </Link>
-              <Link
-                href="/become-provider"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Become a Provider
-              </Link>
-            </nav>
             <div className="flex items-center space-x-4">
               <ModeToggle />
               <Link href="/auth/login">
@@ -438,7 +420,7 @@ export default function HomePage() {
                 Find Services
               </Button>
             </Link>
-            <Link href="/become-provider">
+            <Link href="/auth/register">
               <Button
                 size="lg"
                 variant="outline"
@@ -455,7 +437,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-background border-t py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Calendar className="h-6 w-6 text-primary" />
@@ -466,27 +448,7 @@ export default function HomePage() {
                 booking experiences.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">For Clients</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>
-                  <Link href="/services" className="hover:text-foreground">
-                    Browse Services
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/how-it-works" className="hover:text-foreground">
-                    How It Works
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/support" className="hover:text-foreground">
-                    Support
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
+            {/* <div>
               <h3 className="font-semibold mb-4">For Providers</h3>
               <ul className="space-y-2 text-muted-foreground">
                 <li>
@@ -514,7 +476,7 @@ export default function HomePage() {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-muted-foreground">

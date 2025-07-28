@@ -17,18 +17,18 @@ import {
   Clock,
   MapPin,
   Star,
-  Plus,
   DollarSign,
   Users,
-  TrendingUp,
   Bell,
   Settings,
 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { useRouter } from "next/navigation";
+import ProviderBookingsPage from "./bookings/page";
+import ServiceManagementPage from "./services/page";
+import AvailabilityManagementPage from "./availability/page";
 
 export default function ProviderDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
-
   const stats = [
     {
       title: "Total Bookings",
@@ -87,33 +87,6 @@ export default function ProviderDashboard() {
     },
   ];
 
-  const services = [
-    {
-      id: 1,
-      name: "Professional Photography Session",
-      price: "$150/hour",
-      bookings: 45,
-      rating: 4.9,
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Portrait Photography",
-      price: "$100/hour",
-      bookings: 32,
-      rating: 4.8,
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Event Photography",
-      price: "$200/hour",
-      bookings: 18,
-      rating: 5.0,
-      status: "active",
-    },
-  ];
-
   const recentReviews = [
     {
       id: 1,
@@ -161,49 +134,49 @@ export default function ProviderDashboard() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, Sarah!</h1>
-          <p className="text-muted-foreground">
-            Manage your services and bookings
-          </p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      {stat.title}
-                    </p>
-                    <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-green-600">
-                      {stat.change} from last month
-                    </p>
-                  </div>
-                  <div
-                    className={`w-12 h-12 rounded-lg bg-muted flex items-center justify-center`}
-                  >
-                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5 ">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="availability">Availability</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
+            <div className="my-8">
+              <h1 className="text-3xl font-bold mb-2">Welcome back, Sarah!</h1>
+              <p className="text-muted-foreground">
+                Manage your services and bookings
+              </p>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {stats.map((stat, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {stat.title}
+                        </p>
+                        <p className="text-2xl font-bold">{stat.value}</p>
+                        <p className="text-xs text-green-600">
+                          {stat.change} from last month
+                        </p>
+                      </div>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-muted flex items-center justify-center`}
+                      >
+                        <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Upcoming Bookings */}
               <div className="lg:col-span-2">
@@ -213,10 +186,6 @@ export default function ProviderDashboard() {
                       <CardTitle>Upcoming Bookings</CardTitle>
                       <CardDescription>Your next appointments</CardDescription>
                     </div>
-                    <Button size="sm">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Booking
-                    </Button>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {upcomingBookings.map((booking) => (
@@ -285,64 +254,7 @@ export default function ProviderDashboard() {
                 </Card>
               </div>
 
-              {/* Sidebar */}
               <div className="space-y-6">
-                {/* Performance */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>This Month's Performance</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span>Booking Goal</span>
-                        <span>15/20</span>
-                      </div>
-                      <Progress value={75} />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span>Revenue Goal</span>
-                        <span>$3,240/$4,000</span>
-                      </div>
-                      <Progress value={81} />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span>Client Satisfaction</span>
-                        <span>4.9/5.0</span>
-                      </div>
-                      <Progress value={98} />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Quick Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <Button className="w-full justify-start">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add New Service
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start bg-transparent"
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Set Availability
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start bg-transparent"
-                    >
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      View Analytics
-                    </Button>
-                  </CardContent>
-                </Card>
 
                 {/* Recent Activity */}
                 <Card>
@@ -380,57 +292,7 @@ export default function ProviderDashboard() {
           </TabsContent>
 
           <TabsContent value="services" className="space-y-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>My Services</CardTitle>
-                  <CardDescription>
-                    Manage your service offerings
-                  </CardDescription>
-                </div>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Service
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {services.map((service) => (
-                    <Card key={service.id}>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-semibold">{service.name}</h3>
-                            <div className="flex items-center space-x-4 mt-2 text-sm text-muted-foreground">
-                              <span>{service.price}</span>
-                              <span>{service.bookings} bookings</span>
-                              <div className="flex items-center space-x-1">
-                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                <span>{service.rating}</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge
-                              variant={
-                                service.status === "active"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                            >
-                              {service.status}
-                            </Badge>
-                            <Button variant="outline" size="sm">
-                              Edit
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <ServiceManagementPage />
           </TabsContent>
 
           <TabsContent value="reviews" className="space-y-6">
@@ -496,78 +358,11 @@ export default function ProviderDashboard() {
           </TabsContent>
 
           <TabsContent value="bookings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>All Bookings</CardTitle>
-                <CardDescription>Manage all your appointments</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {upcomingBookings.map((booking) => (
-                    <Card key={booking.id}>
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start space-x-4">
-                            <Avatar>
-                              <AvatarImage
-                                src={booking.avatar || "/placeholder.svg"}
-                              />
-                              <AvatarFallback>
-                                {booking.client
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="flex-1">
-                              <h3 className="font-semibold">
-                                {booking.service}
-                              </h3>
-                              <p className="text-sm text-muted-foreground mb-2">
-                                with {booking.client}
-                              </p>
-                              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                                <div className="flex items-center space-x-1">
-                                  <Calendar className="h-4 w-4" />
-                                  <span>{booking.date}</span>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                  <Clock className="h-4 w-4" />
-                                  <span>
-                                    {booking.time} ({booking.duration})
-                                  </span>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                  <MapPin className="h-4 w-4" />
-                                  <span>{booking.location}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <Badge variant="secondary" className="mb-2">
-                              {booking.status}
-                            </Badge>
-                            <p className="font-semibold">{booking.price}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2 mt-4">
-                          <Button variant="outline" size="sm">
-                            Reschedule
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            Cancel
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            Message Client
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <ProviderBookingsPage />
+          </TabsContent>
+
+          <TabsContent value="availability" className="space-y-6">
+            <AvailabilityManagementPage />
           </TabsContent>
         </Tabs>
       </div>

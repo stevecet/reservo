@@ -30,8 +30,10 @@ import {
   Share,
   Bell,
   Settings,
+  House,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Service {
   id: number;
@@ -57,6 +59,7 @@ interface Service {
 }
 
 export default function ServiceDiscoveryPage() {
+  const router = useRouter();
   const [services] = useState<Service[]>([
     {
       id: 1,
@@ -281,28 +284,13 @@ export default function ServiceDiscoveryPage() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-8 w-8 text-primary" />
-              <Link href="/">
-                <span className="text-2xl font-bold cursor-pointer">
-                  Reservo
-                </span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="icon">
-                <Bell className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" asChild>
-                <Link href="/auth/login">Sign In</Link>
-              </Button>
-              <Button asChild>
-                <Link href="/auth/register">Get Started</Link>
-              </Button>
-            </div>
+            <Button
+              className="flex items-center space-x-2"
+              onClick={() => router.push("/dashboard/client")}
+            >
+              <House className="text-primary text-black" />
+              <span className="text-md">Back home</span>
+            </Button>
           </div>
         </div>
       </header>
@@ -500,7 +488,11 @@ export default function ServiceDiscoveryPage() {
                   >
                     View Details
                   </Button>
-                  <Button size="sm" className="flex-1">
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => router.push("book")}
+                  >
                     Book Now
                   </Button>
                 </div>

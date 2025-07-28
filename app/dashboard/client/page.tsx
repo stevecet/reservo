@@ -21,11 +21,11 @@ import {
   Bell,
   Settings,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export default function ClientDashboard() {
   const [activeTab, setActiveTab] = useState("upcoming");
-
+  const router = useRouter()
   const upcomingBookings = [
     {
       id: 1,
@@ -136,8 +136,8 @@ export default function ClientDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={()=> router.push("client/services")}>
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -153,7 +153,7 @@ export default function ClientDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={()=> router.push("client/bookings")}>
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -169,7 +169,7 @@ export default function ClientDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+          {/* <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -183,7 +183,7 @@ export default function ClientDashboard() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Main Content */}
@@ -389,20 +389,6 @@ export default function ClientDashboard() {
                     </Button>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
-
-            {/* Quick Search */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Search</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search services..." className="pl-10" />
-                </div>
-                <Button className="w-full">Find Services</Button>
               </CardContent>
             </Card>
 
